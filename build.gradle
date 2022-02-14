@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id "io.freefair.lombok" version "6.1.0"
 }
 
 group = 'ee.bcs'
@@ -33,6 +34,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 	implementation "org.mapstruct:mapstruct:1.4.2.Final"
 	implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+}
+
+compileJava {
+	// Ignoring Unmapped Properties (no error, no warning), Inject Spring Components into the Mapper
+	options.compilerArgs += ['-Amapstruct.unmappedTargetPolicy=IGNORE', '-Amapstruct.defaultComponentModel=spring']
 }
 
 tasks.named('test') {
