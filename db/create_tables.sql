@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2022-02-14 12:03:45.24
+-- Last modification date: 2022-02-14 13:24:33.528
 
 -- tables
 -- Table: contact
@@ -26,7 +26,7 @@ CREATE TABLE delivery (
 -- Table: delivery_method
 CREATE TABLE delivery_method (
                                  id serial  NOT NULL,
-                                 price int  NOT NULL,
+                                 price decimal(10,2)  NOT NULL,
                                  name varchar(50)  NOT NULL,
                                  description varchar(100)  NULL,
                                  delivery_time varchar(50)  NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE item (
                       id serial  NOT NULL,
                       seller_id int  NOT NULL,
                       name varchar(100)  NOT NULL,
-                      price decimal(10000,2)  NOT NULL,
+                      price decimal(10,2)  NOT NULL,
                       description varchar(1000)  NULL,
                       CONSTRAINT item_pk PRIMARY KEY (id)
 );
@@ -61,7 +61,7 @@ CREATE TABLE "order" (
                          order_number varchar(10)  NOT NULL,
                          order_date timestamp  NOT NULL,
                          order_status char(1)  NOT NULL,
-                         total_price decimal  NOT NULL,
+                         total_price decimal(10,2)  NOT NULL,
                          CONSTRAINT order_pk PRIMARY KEY (id)
 );
 
@@ -71,7 +71,7 @@ CREATE TABLE order_item (
                             order_id int  NOT NULL,
                             item_id int  NOT NULL,
                             quantity int  NOT NULL,
-                            sum decimal(10000,2)  NOT NULL,
+                            sum decimal(10,2)  NOT NULL,
                             CONSTRAINT order_item_pk PRIMARY KEY (id)
 );
 
