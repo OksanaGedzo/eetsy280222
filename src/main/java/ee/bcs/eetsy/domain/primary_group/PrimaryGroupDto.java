@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @Data
 public class PrimaryGroupDto implements Serializable {
+    private final int id;
     private final PictureDto picture;
     private final String name;
 }

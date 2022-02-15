@@ -10,15 +10,15 @@ public class Picture {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "path", nullable = false, length = 150)
-    private String path;
+    @Column(name = "data", nullable = false)
+    private byte[] data;
 
-    public String getPath() {
-        return path;
+    public byte[] getData() {
+        return data;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
     public Integer getId() {

@@ -22,7 +22,6 @@ public class PrimaryGroupController {
     public List<PrimaryGroupDto> getAllPrimaryGroups() {
 
         List<PrimaryGroupDto> allPrimaryGroups = primaryGroupService.findAllPrimaryGroups();
-
         return allPrimaryGroups;
     }
 
