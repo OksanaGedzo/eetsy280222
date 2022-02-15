@@ -85,7 +85,7 @@ CREATE TABLE payment_method (
 -- Table: picture
 CREATE TABLE picture (
                          id serial  NOT NULL,
-                         path varchar(150)  NOT NULL,
+                         data bytea  NOT NULL,
                          CONSTRAINT picture_pk PRIMARY KEY (id)
 );
 
