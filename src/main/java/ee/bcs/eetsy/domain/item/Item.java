@@ -1,10 +1,14 @@
 package ee.bcs.eetsy.domain.item;
 
 import ee.bcs.eetsy.domain.seller.Seller;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "item")
 public class Item {

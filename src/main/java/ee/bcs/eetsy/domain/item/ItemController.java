@@ -17,12 +17,22 @@ public class ItemController {
     @Resource
     private ItemService itemService;
 
+
+
     @GetMapping("/items/")
     @Operation(summary = "Get'i kõik sub_groupi itemide andmed")
     public List<ItemDto> Items() {
         List<ItemDto> items = itemService.findAllItems();
         return items;
     }
+
+    @GetMapping("/item/by/name")
+    @Operation(summary = "Get'i itemi andmed by name")
+    public ItemDto ItemByName(String name) {
+        ItemDto itemByNameDto = itemService.findItemByName(name);
+        return itemByNameDto;
+    }
+
 
 
 }

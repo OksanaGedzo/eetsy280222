@@ -17,7 +17,7 @@ public class PrimaryGroupController {
     PrimaryGroupService primaryGroupService;
 
 
-    @GetMapping("/getallprimarygroups/")
+    @GetMapping("/get/all/primarygroups/")
     @Operation(summary = "Get'i kõik primary_group andmed")
     public List<PrimaryGroupDto> getAllPrimaryGroups() {
 

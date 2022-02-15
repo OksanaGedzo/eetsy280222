@@ -20,13 +20,36 @@ public class SubGroupController {
     @Resource
     private SubGroupService subGroupService;
 
-    @GetMapping("/getallsubgroups/")
+    @GetMapping("/get/all/subgroups/")
     @Operation(summary = "Get'i kõik sub_group andmed")
 
-    public List<SubGroupDto> getAllPrimaryGroups() {
+    public List<SubGroupDto> getAllSubGroups() {
 
         List<SubGroupDto> allSubGroups = subGroupService.findAllSubGroups();
         return allSubGroups;
     }
+
+    //Oksana:otsime sub-groups listi by primary-group id.( Kõik, mis elavad ühe primary-groupi sees, nt Handcraftis)
+    @GetMapping("/get/subgroups/by/primarygroup/id")
+    @Operation (summary= "Get sub_gruppid, mis kuuluvad primary_groupisse")
+
+    public List<SubGroupDto> getSubGroupsByPrimaryGroupId(int id){
+       List<SubGroupDto> subGroupDtos = subGroupService.findSubGroupsByPrimaryGroupId(id);
+        return subGroupDtos;
+    }
+
+    //???? Oksana:otsime sub-groupi by ühe item id? ?????
+    @GetMapping("/get/subgroup/by/item/id")
+    @Operation (summary= "Get sub_gruppi, millele kuulub item by valitud id")
+
+    public SubGroupDto getSubGroupByItemId(int id){
+        SubGroupDto subGroupDto = subGroupService.findSubGroupByItemId(id);
+        return subGroupDto;
+    }
+
+
+
+
+
 
 }
