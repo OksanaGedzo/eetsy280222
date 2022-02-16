@@ -9,7 +9,12 @@ public interface SubGroupMapper {
     SubGroup subGroupDtoToSubGroup(SubGroupDto subGroupDto);
 
     SubGroupDto subGroupToSubGroupDto(SubGroup subGroup);
-    List<SubGroupDto> subGroupsToSubGroupsDto(List<SubGroup> subGroup);
+
+    @Mapping(target = "name", source = "subGroup.name")
+    @Mapping(target = "pictureDto", source = "subGroup.picture")
+    List<SubGroupResponse> subGroupToSubGroupResponse(List<SubGroup> subGroups);
+
+
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateSubGroupFromSubGroupDto(SubGroupDto subGroupDto, @MappingTarget SubGroup subGroup);
