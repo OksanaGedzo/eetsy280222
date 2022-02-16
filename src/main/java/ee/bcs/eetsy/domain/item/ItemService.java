@@ -28,10 +28,16 @@ public class ItemService {
         return allItemsDtos;
     }
 
-    public ItemDto findItemByName(String name) {
-        Item itemByName = itemRepository.findByName(name);
-        ItemDto itemByNameDto  = itemMapper.itemToItemDto(itemByName);
-        return itemByNameDto;
+//    public ItemDto findItemByName(String name) {
+//        Item itemByName = itemRepository.findByName(name);
+//        ItemDto itemByNameDto  = itemMapper.itemToItemDto(itemByName);
+//        return itemByNameDto;
+//    }
+
+    public ItemDto findItemdById(Integer id) {
+        Optional<Item> itemById = itemRepository.findById(id);
+        ItemDto itemDto = itemMapper.itemToItemDto(itemById.get());
+        return itemDto;
     }
 
 

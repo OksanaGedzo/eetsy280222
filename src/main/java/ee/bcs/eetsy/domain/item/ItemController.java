@@ -24,11 +24,18 @@ public class ItemController {
         return items;
     }
 
-    @GetMapping("/item/by/name")
-    @Operation(summary = "Get'i itemi andmed by name")
-    public ItemDto ItemByName(String name) {
-        ItemDto itemByNameDto = itemService.findItemByName(name);
-        return itemByNameDto;
+//    @GetMapping("/item/by/name")
+//    @Operation(summary = "Get'i itemi andmed by name")
+//    public ItemDto ItemByName(String name) {
+//        ItemDto itemByNameDto = itemService.findItemByName(name);
+//        return itemByNameDto;
+//    }
+
+    @GetMapping("/product")
+    @Operation(summary = "Get'i ühe itemi andmed by id")
+    public ItemDto GetProduct (Integer id) {
+        ItemDto itemDto = itemService.findItemdById(id);
+        return itemDto;
     }
 
 

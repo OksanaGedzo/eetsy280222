@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class SubGroupItemResponse {
-    private final Integer id;
+    private final Integer itemId;
     private final String subGroupName;
     private final String itemName;
     private final BigDecimal itemPrice;
