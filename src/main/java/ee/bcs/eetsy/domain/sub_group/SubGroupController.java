@@ -38,14 +38,14 @@ public class SubGroupController {
         return subGroupDtos;
     }
 
-    //???? Oksana:otsime sub-groupi by ühe item id? ?????
-    @GetMapping("/get/subgroup/by/item/id")
-    @Operation (summary= "Get sub_gruppi, millele kuulub item by valitud id")
-
-    public SubGroupDto getSubGroupByItemId(int id){
-        SubGroupDto subGroupDto = subGroupService.findSubGroupByItemId(id);
-        return subGroupDto;
-    }
+//    //???? Oksana:otsime sub-groupi by ühe item id? ?????
+//    @GetMapping("/get/subgroup/by/item/id")
+//    @Operation (summary= "Get sub_gruppi, millele kuulub item by valitud id")
+//
+//    public SubGroupDto getSubGroupByItemId(int id){
+//        SubGroupDto subGroupDto = subGroupService.findSubGroupByItemId(id);
+//        return subGroupDto;
+//    }
 
 
 

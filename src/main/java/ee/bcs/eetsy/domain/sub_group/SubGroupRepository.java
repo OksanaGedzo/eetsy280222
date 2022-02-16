@@ -11,11 +11,11 @@ public interface SubGroupRepository extends JpaRepository<SubGroup, Integer> {
 
 
 
- //  Oksana : ???? Küsime sub-group läbi item id ????????
-    @Query("select s from SubGroup s where s.item.id = ?1")
-    List<SubGroup> findSubGroupsByItemId(Integer id);
-    @Query("select s from SubGroup s where s.item.id = ?1")
-    SubGroup findSubGroupByItemId(Integer id);
+// //  Oksana : ???? Küsime sub-group läbi item id ????????
+//    @Query("select s from SubGroup s where s.item.id = ?1")
+//    List<SubGroup> findSubGroupsByItemId(Integer id);
+//    @Query("select s from SubGroup s where s.item.id = ?1")
+//    SubGroup findSubGroupByItemId(Integer id);
 
 
 

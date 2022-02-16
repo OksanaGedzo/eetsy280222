@@ -28,10 +28,14 @@ public class SubGroupService {
         return subGroupsDtos;
     }
 
-    // Oksana: otsime sub-group by item id.(  mis elab ühe sub-groupi sees, nt ForYourHead)
-    public SubGroupDto findSubGroupByItemId ( int id) {
-        SubGroup subGroupByItemId = subGroupRepository.findSubGroupByItemId(id);
-        SubGroupDto subGroupByItemIdDto = subGroupMapper.subGroupToSubGroupDto(subGroupByItemId);
-        return subGroupByItemIdDto;
-    }
+
+
+
+
+//    // Oksana: otsime sub-group by item id.(  mis elab ühe sub-groupi sees, nt ForYourHead)
+//    public SubGroupDto findSubGroupByItemId ( int id) {
+//        SubGroup subGroupByItemId = subGroupRepository.findSubGroupByItemId(id);
+//        SubGroupDto subGroupByItemIdDto = subGroupMapper.subGroupToSubGroupDto(subGroupByItemId);
+//        return subGroupByItemIdDto;
+//    }
 }
