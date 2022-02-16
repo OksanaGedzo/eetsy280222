@@ -17,6 +17,7 @@ public interface SubGroupMapper {
     List<SubGroupResponse> subGroupToSubGroupResponses(List<SubGroup> subGroups);
 
 
+    @Mapping(target = "itemId", source = "item.id")
     @Mapping(target = "subGroupName", source = "name")
     @Mapping(target = "itemName", source = "item.name")
     @Mapping(target = "itemPrice", source = "item.price")
