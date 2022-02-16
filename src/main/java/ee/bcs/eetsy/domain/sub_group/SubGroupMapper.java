@@ -10,10 +10,26 @@ public interface SubGroupMapper {
 
     SubGroupDto subGroupToSubGroupDto(SubGroup subGroup);
 
-    @Mapping(target = "name", source = "subGroup.name")
-    @Mapping(target = "pictureDto", source = "subGroup.picture")
-    List<SubGroupResponse> subGroupToSubGroupResponse(List<SubGroup> subGroups);
 
+    @Mapping(target = "pictureData", source = "picture.data")
+    @Mapping(target = "name", source = "name")
+    SubGroupResponse subGroupToSubGroupResponse(SubGroup subGroups);
+    List<SubGroupResponse> subGroupToSubGroupResponses(List<SubGroup> subGroups);
+
+
+    @Mapping(target = "subGroupName", source = "name")
+    @Mapping(target = "itemName", source = "item.name")
+    @Mapping(target = "itemPrice", source = "item.price")
+    @Mapping(target = "itemDescription", source = "item.description")
+    SubGroupItemResponse toSubGroupItemResponse(SubGroup subGroups);
+    List<SubGroupItemResponse> toSubGroupItemResponses(List<SubGroup> subGroups);
+
+
+
+
+//    @Mapping(target = "name", source = "subGroup.name")
+//    @Mapping(target = "picture", source = "subGroup.picture")
+//    SubGroupResponse subGroupResponse (SubGroup subGroup);
 
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

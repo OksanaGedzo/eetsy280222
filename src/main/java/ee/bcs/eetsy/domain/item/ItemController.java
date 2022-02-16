@@ -1,5 +1,6 @@
 package ee.bcs.eetsy.domain.item;
 
+import ee.bcs.eetsy.domain.sub_group.SubGroupItemResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,12 +12,9 @@ import java.util.List;
 
 public class ItemController {
 
-    @Resource
-    private ItemRepository itemRepository;
 
     @Resource
     private ItemService itemService;
-
 
 
     @GetMapping("/items/")

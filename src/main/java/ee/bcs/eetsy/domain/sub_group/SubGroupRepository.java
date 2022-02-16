@@ -11,18 +11,27 @@ public interface SubGroupRepository extends JpaRepository<SubGroup, Integer> {
     List<SubGroup> findSubGroupsByPrimaryGroupId(Integer id);
 
 
-
-
     @Query("select distinct s from SubGroup s where s.primaryGroup.id = :id")
     List<SubGroup> findDistinctByPrimaryGroup_Id(@Param("id") Integer id);
 
+    @Query("select s from SubGroup s where upper(s.name) = upper(:name)")
+    List<SubGroup> findByNameIgnoreCase(@Param("name") String name);
 
 
-// //  Oksana : ???? Küsime sub-group läbi item id ????????
-//    @Query("select s from SubGroup s where s.item.id = ?1")
-//    List<SubGroup> findSubGroupsByItemId(Integer id);
-//    @Query("select s from SubGroup s where s.item.id = ?1")
-//    SubGroup findSubGroupByItemId(Integer id);
+
+
+
+
+
+//
+//    @Query("select s from SubGroup s where s.primaryGroup.id = :id")
+//    SubGroup findByPrimaryGroupId(@Param("id") Integer id);
+
+
+
+
+
+
 
 
 

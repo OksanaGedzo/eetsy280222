@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class SubGroupResponse {
-    private final PictureDto picture;
+    private final byte[] pictureData;
     private final String name;
 }

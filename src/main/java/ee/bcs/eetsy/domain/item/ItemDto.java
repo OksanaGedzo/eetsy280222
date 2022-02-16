@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 @Data
 public class ItemDto implements Serializable {
     private final Integer id;
-    private final Seller seller;
-    private final String name;
-    private final BigDecimal price;
-    private final String description;
+        private final Seller seller;
+        private final String name;
+        private final BigDecimal price;
+        private final String description;
 }
