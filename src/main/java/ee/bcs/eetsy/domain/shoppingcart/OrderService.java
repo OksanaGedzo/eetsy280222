@@ -5,16 +5,20 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class OrderService {
 
 
     @Resource
-    OrderItemRepository orderItemRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Resource
-    ItemRepository itemRepository;
+    private OrderItemMapper orderItemMapper;
+
+    @Resource
+    private ItemRepository itemRepository;
 
     public OrderItem addItemToCart(Integer id, Integer quantity) {
         OrderItem orderItem = new OrderItem();
@@ -32,6 +36,20 @@ public class OrderService {
         BigDecimal quantity = BigDecimal.valueOf(amount);
         return price.multiply(quantity);
     }
+
+    public List<OrderItemDto> findOrderItemsByOrderId(Integer id){
+        List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrderId(id);
+        List<OrderItemDto> orderItemDtos = orderItemMapper.orderItemToOrderItemDtos(orderItems);
+        return  orderItemDtos;
+    }
+
+    public List<OrderItemResponse> getOrderItemsByOrderId(Integer id){
+        List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrderId(id);
+        List<OrderItemResponse> orderItemResponses = orderItemMapper.orderItemsToOrderItemsResponses(orderItems);
+        return  orderItemResponses;
+    }
+
+
 }
 
 //add item to cart

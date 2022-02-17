@@ -13,29 +13,31 @@ import java.util.List;
 public class OrderController {
 
     @Resource
-    OrderItemRepository orderItemRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Resource
-    OrderService orderService;
+   private OrderService orderService;
     @Resource
-    ItemRepository itemRepository;
+   private ItemRepository itemRepository;
 
 
-    @GetMapping ("/add/orderitem/to/cart")
+    @GetMapping("/add/orderitem/to/cart")
     @Operation(summary = "add oder item to shopping cart ")
     public OrderItem addItemToCart(@RequestParam Integer itemId, @RequestParam Integer itemQuantity) {
-       orderService.addItemToCart(itemId, itemQuantity);
+        orderService.addItemToCart(itemId, itemQuantity);
 
 
         return null;
 
     }
+    @GetMapping("get/order/items/by/order/id")
+    @Operation(summary = "get order Items by order id ")
+    public List<OrderItemResponse> getOrderItemsByOrderId (@RequestParam Integer id) {
+        List<OrderItemResponse> orderItemResponses = orderService.getOrderItemsByOrderId(id);
+        return orderItemResponses;
+    }
+
 }
-
-
-
-
-
 
 
 //    public List<SubGroupResponse> getSubGroupsByPrimaryGroupId(@RequestParam Integer id) {
