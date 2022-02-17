@@ -3,6 +3,7 @@ package ee.bcs.eetsy.domain.item;
 import ee.bcs.eetsy.domain.sub_group.SubGroupItemResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ public class ItemController {
 
     @GetMapping("/get/product/by/id")
     @Operation(summary = "Get'i ühe itemi andmed by id")
-    public ItemDto GetProduct (Integer id) {
+    public ItemDto GetProduct (@RequestParam Integer id) {
         ItemDto itemDto = itemService.findItemdById(id);
         return itemDto;
     }
