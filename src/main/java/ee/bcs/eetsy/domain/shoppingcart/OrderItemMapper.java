@@ -4,10 +4,10 @@ import org.mapstruct.*;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface OrderItemMapper {
-    OrderItem orderItemDtoToOrderItem(OrderItemDto orderItemDto);
+    OrderItem orderItemDtoToOrderItem(OrdertItemDto cartItemDto);
 
-    OrderItemDto orderItemToOrderItemDto(OrderItem orderItem);
+    OrdertItemDto orderItemToOrderItemDto(OrderItem orderItem);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateOrderItemFromOrderItemDto(OrderItemDto orderItemDto, @MappingTarget OrderItem orderItem);
+    void updateOrderItemFromOrderItemDto(OrdertItemDto cartItemDto, @MappingTarget OrderItem orderItem);
 }
