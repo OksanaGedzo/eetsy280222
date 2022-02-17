@@ -1,6 +1,6 @@
 package ee.bcs.eetsy.domain.shoppingcart;
 
-import ee.bcs.eetsy.domain.paymentmntmethod.PaymentMethod;
+import ee.bcs.eetsy.domain.paymentmethod.PaymentMethod;
 import ee.bcs.eetsy.domain.user.User;
 
 import javax.persistence.*;

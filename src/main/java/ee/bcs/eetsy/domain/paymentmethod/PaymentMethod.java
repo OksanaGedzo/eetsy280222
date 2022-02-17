@@ -1,4 +1,4 @@
-package ee.bcs.eetsy.domain.paymentmntmethod;
+package ee.bcs.eetsy.domain.paymentmethod;
 
 import javax.persistence.*;
 
