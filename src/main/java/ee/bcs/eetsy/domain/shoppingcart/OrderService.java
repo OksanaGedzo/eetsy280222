@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 @Service
 public class OrderService {
 
-    @Resource
-    OrdertItemDto cartItemDto;
 
     @Resource
     OrderItemRepository orderItemRepository;
