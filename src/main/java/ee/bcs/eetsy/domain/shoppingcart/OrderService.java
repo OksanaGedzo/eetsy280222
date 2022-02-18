@@ -2,6 +2,7 @@ package ee.bcs.eetsy.domain.shoppingcart;
 
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
+import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodRepository;
 import ee.bcs.eetsy.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 import javax.persistence.OrderBy;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +39,9 @@ public class OrderService {
 
     @Resource
     private UserRepository userRepository;
+
+    @Resource
+    private PaymentMethodRepository paymentMethodRepository;
 
 
     public OrderItem addItemToCart(Integer id, Integer quantity) {
@@ -87,6 +92,9 @@ public class OrderService {
         order.setOrderNumber(createOrderNumber());
         order.setOrderStatus(ORDER_OPEN);
         order.setUser(userRepository.findById(userId).get());
+        order.setOrderDate(Instant.now());
+        order.setPaymentMethod(paymentMethodRepository.findAll().get(0));
+        order.setTotalPrice(BigDecimal.ZERO);
         orderRepository.save(order);
         return order;
     }
