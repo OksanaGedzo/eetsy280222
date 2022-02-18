@@ -17,8 +17,14 @@ public class OrderController {
 
     @Resource
     private OrderService orderService;
+
     @Resource
     private ItemRepository itemRepository;
+
+    @Resource
+    private OrderRepository orderRepository;
+
+
 
 
     @GetMapping("/add/orderitem/to/cart")
@@ -37,6 +43,13 @@ public class OrderController {
     public List<OrderItemResponse> getOrderItemsByOrderId(@RequestParam Integer id) {
         List<OrderItemResponse> orderItemResponses = orderService.getOrderItemsByOrderId(id);
         return orderItemResponses;
+    }
+
+    @GetMapping("/get/open/order/by/user/id")
+    @Operation(summary = "get open order by user id ")
+    public Integer findOpenOrderByUserId (@RequestParam Integer userId) {
+       Integer id = orderService.findOpenOrderByUserId(userId);
+        return id;
     }
 
 }

@@ -1,14 +1,26 @@
 package ee.bcs.eetsy.domain.shoppingcart;
+
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
+import ee.bcs.eetsy.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class OrderService {
+    public static final String ORDER_RECEIVED = "R";
+    public static final String ORDER_IN_PROGRESS = "P";
+    public static final String ORDER_IN_TRANSIT = "T";
+    public static final String ORDER_DELIVERED = "D";
+    public static final String ORDER_CANCELLED = "C";
+    public static final String ORDER_OPEN = "O";
 
 
     @Resource
@@ -20,9 +32,17 @@ public class OrderService {
     @Resource
     private ItemRepository itemRepository;
 
+    @Resource
+    private OrderRepository orderRepository;
+
+    @Resource
+    private UserRepository userRepository;
+
+
+
     public OrderItem addItemToCart(Integer id, Integer quantity) {
         OrderItem orderItem = new OrderItem();
-        Order order= new Order();
+        Order order = new Order();
         orderItem.setOrder(order);
         orderItem.setQuantity(quantity);
         Item item = itemRepository.findById(id).get();
@@ -32,21 +52,50 @@ public class OrderService {
         orderItemRepository.save(orderItem);
         return orderItem;
     }
-    public BigDecimal calculateOrderItemSum (Integer amount, BigDecimal price) {
+
+    public BigDecimal calculateOrderItemSum(Integer amount, BigDecimal price) {
         BigDecimal quantity = BigDecimal.valueOf(amount);
         return price.multiply(quantity);
     }
 
-    public List<OrderItemDto> findOrderItemsByOrderId(Integer id){
+    public List<OrderItemDto> findAllOrderItemsByOrderId(Integer id) {
         List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrderId(id);
         List<OrderItemDto> orderItemDtos = orderItemMapper.orderItemToOrderItemDtos(orderItems);
-        return  orderItemDtos;
+        return orderItemDtos;
     }
 
-    public List<OrderItemResponse> getOrderItemsByOrderId(Integer id){
+    public List<OrderItemResponse> getOrderItemsByOrderId(Integer id) {
         List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrderId(id);
         List<OrderItemResponse> orderItemResponses = orderItemMapper.orderItemsToOrderItemsResponses(orderItems);
-        return  orderItemResponses;
+        return orderItemResponses;
+    }
+
+    public Integer findOpenOrderByUserId(Integer userId) {
+        Optional<Order> order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN);
+        if (order.isEmpty()) {
+            Order newOrder = createNewOrder(userId);
+            return newOrder.getId();
+        } else {
+            Order newOrder = order.get();
+            return newOrder.getId();
+        }
+    }
+
+    public Order createNewOrder(Integer userId) {
+        Order order = new Order();
+        order.setOrderNumber(createOrderNumber());
+        order.setOrderStatus(ORDER_OPEN);
+        order.setUser(userRepository.findById(userId).get());
+        orderRepository.save(order);
+        return order;
+    }
+
+    public String createOrderNumber() {
+        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyy");
+        Date date = new Date();
+        Integer randomInt = new Random().nextInt(9999 - 1000);
+        String orderNumber = formatter.format(date) + "" + randomInt;
+        return orderNumber;
     }
 
 
