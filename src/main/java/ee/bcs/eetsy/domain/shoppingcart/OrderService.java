@@ -7,7 +7,6 @@ import ee.bcs.eetsy.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.persistence.OrderBy;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -44,12 +43,15 @@ public class OrderService {
     private PaymentMethodRepository paymentMethodRepository;
 
 
-    public OrderItem addItemToCart(Integer id, Integer quantity) {
+    public OrderItem createOrderItem(OrderItemRequest orderItemRequest) {
         OrderItem orderItem = new OrderItem();
-        Order order = new Order();
+        Integer userId = orderItemRequest.getUserId();
+        Integer itemId= orderItemRequest.getItemId();
+        Integer quantity = orderItemRequest.getQuantity();
+        Order order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN).get();
+        Item item = itemRepository.findById(itemId).get();
         orderItem.setOrder(order);
         orderItem.setQuantity(quantity);
-        Item item = itemRepository.findById(id).get();
         orderItem.setItem(item);
         BigDecimal itemSum = calculateOrderItemSum(quantity, item.getPrice());
         orderItem.setSum(itemSum);

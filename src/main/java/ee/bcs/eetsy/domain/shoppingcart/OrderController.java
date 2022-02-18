@@ -2,7 +2,6 @@ package ee.bcs.eetsy.domain.shoppingcart;
 
 
 import ee.bcs.eetsy.domain.item.ItemRepository;
-import ee.bcs.eetsy.domain.sub_group.SubGroupResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,16 +20,17 @@ public class OrderController {
     @Resource
     private ItemRepository itemRepository;
 
+    @Resource
+    private OrderItemMapper orderItemMapper;
 
-//    @GetMapping("/add/orderitem/to/cart")
-//    @Operation(summary = "add oder item to shopping cart ")
-//    public OrderItem addItemToCart(@RequestParam Integer itemId, @RequestParam Integer itemQuantity) {
-//        orderService.addItemToCart(itemId, itemQuantity);
-//
-//// TODO: 17 Feb 2022 finish!
-//
-//        return null;
 
+    @PutMapping("/add/orderitem/to/cart")
+    @Operation(summary = "add oder item to shopping cart ")
+    public OrderItemResponse addItemToCart(@RequestBody OrderItemRequest orderItemRequest) {
+        OrderItem orderItem = orderService.createOrderItem(orderItemRequest);
+        OrderItemResponse response = orderItemMapper.orderItemToOrderItemResponse(orderItem);
+        return response;
+    }
 
     @GetMapping("/get/order/items/by/order/id")
     @Operation(summary = "get order Items by order id ")
@@ -43,9 +43,10 @@ public class OrderController {
     @Operation(summary = "get open order by user id ")
     public Integer findOPenOrderByUserId(@RequestParam Integer userId) {
         Integer id = orderService.findOpenOrderByUserId(userId);
-
         return id;
     }
+
+
 
 
 }
