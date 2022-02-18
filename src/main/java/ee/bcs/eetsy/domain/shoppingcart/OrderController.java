@@ -22,23 +22,18 @@ public class OrderController {
     private ItemRepository itemRepository;
 
     @Resource
-    private OrderRepository orderRepository;
+    private OrderItemMapper orderItemMapper;
 
 
-
-
-    @GetMapping("/add/orderitem/to/cart")
+    @PutMapping("/add/orderitem/to/cart")
     @Operation(summary = "add oder item to shopping cart ")
-    public OrderItem addItemToCart(@RequestParam Integer itemId, @RequestParam Integer itemQuantity) {
-        orderService.addItemToCart(itemId, itemQuantity);
-
-// TODO: 17 Feb 2022 finish!
-
-        return null;
-
+    public OrderItemResponse addItemToCart(@RequestBody OrderItemRequest orderItemRequest) {
+        OrderItem orderItem = orderService.createOrderItem(orderItemRequest);
+        OrderItemResponse response = orderItemMapper.orderItemToOrderItemResponse(orderItem);
+        return response;
     }
 
-    @GetMapping("get/order/items/by/order/id")
+    @GetMapping("/get/order/items/by/order/id")
     @Operation(summary = "get order Items by order id ")
     public List<OrderItemResponse> getOrderItemsByOrderId(@RequestParam Integer id) {
         List<OrderItemResponse> orderItemResponses = orderService.getOrderItemsByOrderId(id);
@@ -47,10 +42,13 @@ public class OrderController {
 
     @GetMapping("/get/open/order/by/user/id")
     @Operation(summary = "get open order by user id ")
-    public Integer findOpenOrderByUserId (@RequestParam Integer userId) {
-       Integer id = orderService.findOpenOrderByUserId(userId);
+    public Integer findOPenOrderByUserId(@RequestParam Integer userId) {
+        Integer id = orderService.findOpenOrderByUserId(userId);
         return id;
     }
+
+
+
 
 }
 

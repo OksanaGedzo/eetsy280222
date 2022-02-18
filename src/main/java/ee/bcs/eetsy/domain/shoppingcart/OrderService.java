@@ -1,11 +1,9 @@
 package ee.bcs.eetsy.domain.shoppingcart;
-
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodRepository;
 import ee.bcs.eetsy.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -23,7 +21,6 @@ public class OrderService {
     public static final String ORDER_DELIVERED = "D";
     public static final String ORDER_CANCELLED = "C";
     public static final String ORDER_OPEN = "O";
-
 
     @Resource
     private OrderItemRepository orderItemRepository;
@@ -44,13 +41,15 @@ public class OrderService {
     private PaymentMethodRepository paymentMethodRepository;
 
 
-
-    public OrderItem addItemToCart(Integer id, Integer quantity) {
+    public OrderItem createOrderItem(OrderItemRequest orderItemRequest) {
         OrderItem orderItem = new OrderItem();
-        Order order = new Order();
+        Integer userId = orderItemRequest.getUserId();
+        Integer itemId= orderItemRequest.getItemId();
+        Integer quantity = orderItemRequest.getQuantity();
+        Order order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN).get();
+        Item item = itemRepository.findById(itemId).get();
         orderItem.setOrder(order);
         orderItem.setQuantity(quantity);
-        Item item = itemRepository.findById(id).get();
         orderItem.setItem(item);
         BigDecimal itemSum = calculateOrderItemSum(quantity, item.getPrice());
         orderItem.setSum(itemSum);
@@ -63,7 +62,7 @@ public class OrderService {
         return price.multiply(quantity);
     }
 
-    public List<OrderItemDto> findAllOrderItemsByOrderId(Integer id) {
+    public List<OrderItemDto> findOrderItemsByOrderId(Integer id) {
         List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrderId(id);
         List<OrderItemDto> orderItemDtos = orderItemMapper.orderItemToOrderItemDtos(orderItems);
         return orderItemDtos;
@@ -80,10 +79,12 @@ public class OrderService {
         if (order.isEmpty()) {
             Order newOrder = createNewOrder(userId);
             return newOrder.getId();
-        } else {
+        }else{
             Order newOrder = order.get();
             return newOrder.getId();
+
         }
+
     }
 
     public Order createNewOrder(Integer userId) {
@@ -91,9 +92,9 @@ public class OrderService {
         order.setOrderNumber(createOrderNumber());
         order.setOrderStatus(ORDER_OPEN);
         order.setUser(userRepository.findById(userId).get());
+        order.setOrderDate(Instant.now());
         order.setPaymentMethod(paymentMethodRepository.findAll().get(0));
         order.setTotalPrice(BigDecimal.ZERO);
-        order.setOrderDate(Instant.now());
         orderRepository.save(order);
         return order;
     }
@@ -105,10 +106,7 @@ public class OrderService {
         String orderNumber = formatter.format(date) + "" + randomInt;
         return orderNumber;
     }
-
-
 }
 
-//add item to cart
 //remove item from cart
 //update quantity
