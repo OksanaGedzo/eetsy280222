@@ -17,27 +17,36 @@ public class OrderController {
 
     @Resource
     private OrderService orderService;
+
     @Resource
     private ItemRepository itemRepository;
 
 
-    @GetMapping("/add/orderitem/to/cart")
-    @Operation(summary = "add oder item to shopping cart ")
-    public OrderItem addItemToCart(@RequestParam Integer itemId, @RequestParam Integer itemQuantity) {
-        orderService.addItemToCart(itemId, itemQuantity);
+//    @GetMapping("/add/orderitem/to/cart")
+//    @Operation(summary = "add oder item to shopping cart ")
+//    public OrderItem addItemToCart(@RequestParam Integer itemId, @RequestParam Integer itemQuantity) {
+//        orderService.addItemToCart(itemId, itemQuantity);
+//
+//// TODO: 17 Feb 2022 finish!
+//
+//        return null;
 
-// TODO: 17 Feb 2022 finish!
 
-        return null;
-
-    }
-
-    @GetMapping("get/order/items/by/order/id")
+    @GetMapping("/get/order/items/by/order/id")
     @Operation(summary = "get order Items by order id ")
     public List<OrderItemResponse> getOrderItemsByOrderId(@RequestParam Integer id) {
         List<OrderItemResponse> orderItemResponses = orderService.getOrderItemsByOrderId(id);
         return orderItemResponses;
     }
+
+    @GetMapping("/get/open/order/by/user/id")
+    @Operation(summary = "get open order by user id ")
+    public Integer findOPenOrderByUserId(@RequestParam Integer userId) {
+        Integer id = orderService.findOpenOrderByUserId(userId);
+
+        return id;
+    }
+
 
 }
 

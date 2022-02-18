@@ -14,4 +14,6 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
     List<OrderItem> findOrderItemsByOrderId(@Param("id") Integer id);
 
 
+
+
 }

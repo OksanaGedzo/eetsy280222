@@ -25,8 +25,4 @@ public class UserController {
 
 }
 
-//    @GetMapping("/add/orderitem/to/cart")
-//    @Operation(summary = "add oder item to shopping cart ")
-//    public OrderItem addItemToCart(@RequestParam Integer itemId, @RequestParam Integer itemQuantity) {
-//        orderService.addItemToCart(itemId, itemQuantity);
-//}
+
