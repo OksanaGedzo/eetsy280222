@@ -16,9 +16,9 @@ public class OrderController {
     private OrderItemRepository orderItemRepository;
 
     @Resource
-   private OrderService orderService;
+    private OrderService orderService;
     @Resource
-   private ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
 
     @GetMapping("/add/orderitem/to/cart")
@@ -30,9 +30,10 @@ public class OrderController {
         return null;
 
     }
+
     @GetMapping("get/order/items/by/order/id")
     @Operation(summary = "get order Items by order id ")
-    public List<OrderItemResponse> getOrderItemsByOrderId (@RequestParam Integer id) {
+    public List<OrderItemResponse> getOrderItemsByOrderId(@RequestParam Integer id) {
         List<OrderItemResponse> orderItemResponses = orderService.getOrderItemsByOrderId(id);
         return orderItemResponses;
     }
