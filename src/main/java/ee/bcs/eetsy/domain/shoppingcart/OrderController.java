@@ -42,9 +42,16 @@ public class OrderController {
 
     @GetMapping("/get/open/order/by/user/id")
     @Operation(summary = "get open order by user id ")
-    public Integer findOPenOrderByUserId(@RequestParam Integer userId) {
-        Integer id = orderService.findOpenOrderByUserId(userId);
-        return id;
+    public Integer findOpenOrderIdByUserId(@RequestParam Integer userId) {
+        Order order = orderService.findOpenOrderByUserId(userId);
+        return order.getId();
+    }
+
+    @GetMapping("/get/shopping/cart")
+    @Operation(summary = "Composes all necessary data to display the shopping cart page")
+    public ShoppingCartDto getShoppingCartResource (@RequestParam Integer userId) {
+        ShoppingCartDto response = orderService.shoppingCartResource(userId);
+        return response;
     }
 
 

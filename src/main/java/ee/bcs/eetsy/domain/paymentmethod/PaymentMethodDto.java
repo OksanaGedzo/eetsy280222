@@ -7,5 +7,5 @@ import java.io.Serializable;
 @Data
 public class PaymentMethodDto implements Serializable {
     private final Integer id;
-    private final String paymantType;
+    private final String paymentType;
 }

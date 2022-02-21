@@ -32,8 +32,8 @@ public class ItemController {
 
     @GetMapping("/get/product/by/id")
     @Operation(summary = "Get'i ühe itemi andmed by id")
-    public ItemDto GetProduct (@RequestParam Integer id) {
-        ItemDto itemDto = itemService.findItemdById(id);
+    public ItemPagetDto GetProduct (@RequestParam Integer id) {
+        ItemPagetDto itemDto = itemService.findItemdById(id);
         return itemDto;
     }
 

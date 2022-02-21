@@ -1,15 +1,15 @@
 package ee.bcs.eetsy.domain.shoppingcart;
-
 import ee.bcs.eetsy.domain.RequestResponse;
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
+import ee.bcs.eetsy.domain.paymentmethod.PaymentMethod;
+import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodDto;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodRepository;
+import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodService;
 import ee.bcs.eetsy.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.net.ResponseCache;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
@@ -28,21 +28,22 @@ public class OrderService {
 
     @Resource
     private OrderItemRepository orderItemRepository;
-
     @Resource
     private OrderItemMapper orderItemMapper;
-
     @Resource
     private ItemRepository itemRepository;
-
     @Resource
     private OrderRepository orderRepository;
-
     @Resource
     private UserRepository userRepository;
-
     @Resource
     private PaymentMethodRepository paymentMethodRepository;
+    @Resource
+    private OrderMapper orderMapper;
+    @Resource
+    private PaymentMethodService paymentMethodService;
+    @Resource
+    private DeliveryMethodService deliveryMethodService;
 
 
     public RequestResponse createOrderItem(OrderItemRequest orderItemRequest) {
@@ -86,17 +87,15 @@ public class OrderService {
         return orderItemResponses;
     }
 
-    public Integer findOpenOrderByUserId(Integer userId) {
+    public Order findOpenOrderByUserId(Integer userId) {
         Optional<Order> order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN);
         if (order.isEmpty()) {
             Order newOrder = createNewOrder(userId);
-            return newOrder.getId();
+            return newOrder;
         } else {
             Order newOrder = order.get();
-            return newOrder.getId();
-
+            return newOrder;
         }
-
     }
 
     public Order createNewOrder(Integer userId) {
@@ -117,6 +116,29 @@ public class OrderService {
         Integer randomInt = new Random().nextInt(9999 - 1000);
         String orderNumber = formatter.format(date) + "" + randomInt;
         return orderNumber;
+    }
+
+    public ShoppingCartDto shoppingCartResource(Integer userId) {
+        ShoppingCartDto shoppingCartDto = new ShoppingCartDto();
+
+        Order order = findOpenOrderByUserId(userId);
+
+        List<OrderItem> orderItems = orderItemRepository.findOrderItemsByOrderId(order.getId());
+        List<OrderItemDto> orderItemDtos = orderItemMapper.orderItemToOrderItemDtos(orderItems);
+
+        List<PaymentMethodDto> paymentMethodDtos = paymentMethodService.findAllPaymentMethods();
+
+        List<DeliveryMethodDto> deliveryMethodDtos = deliveryMethodService.findAllDeliveryMethods();
+
+        shoppingCartDto.setOrderId(order.getId());
+        shoppingCartDto.setOrderNumber(order.getOrderNumber());
+
+        shoppingCartDto.setOrderItemDtos(orderItemDtos);
+        shoppingCartDto.setPaymentMethodDtos(paymentMethodDtos);
+        shoppingCartDto.setDeliveryMethodDtos(deliveryMethodDtos);
+
+        return shoppingCartDto;
+
     }
 }
 

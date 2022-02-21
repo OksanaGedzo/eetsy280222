@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 
 @Data
 public class OrderItemDto implements Serializable {
-    private final Integer id;
-    private final Order order;
-    private final ItemDto item;
+    private final Integer itemId;
+    private final String itemName;
+    private final BigDecimal itemPrice;
     private final Integer quantity;
     private final BigDecimal sum;
 }
