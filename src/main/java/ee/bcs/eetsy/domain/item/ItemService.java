@@ -34,10 +34,10 @@ public class ItemService {
 //        return itemByNameDto;
 //    }
 
-    public ItemDto findItemdById(Integer id) {
+    public ItemPagetDto findItemdById(Integer id) {
         Optional<Item> itemById = itemRepository.findById(id);
-        ItemDto itemDto = itemMapper.itemToItemDto(itemById.get());
-        return itemDto;
+        ItemPagetDto itemPagetDto = itemMapper.itemToItemPagetDto(itemById.get());
+        return itemPagetDto;
     }
 
 
