@@ -1,5 +1,8 @@
 package ee.bcs.eetsy.domain.shoppingcart;
+
 import ee.bcs.eetsy.domain.RequestResponse;
+import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodDto;
+import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodService;
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethod;
@@ -8,6 +11,7 @@ import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodRepository;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodService;
 import ee.bcs.eetsy.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -65,7 +69,7 @@ public class OrderService {
             response.setMessage("order item added to cart");
             return response;
         } else {
-             response.setError(" order item not added itemId or userId or quantity error ");
+            response.setError(" order item not added itemId or userId or quantity error ");
             return response;
         }
     }
@@ -97,6 +101,19 @@ public class OrderService {
             return newOrder;
         }
     }
+
+    public RequestResponse checkForOpenOrderByUserId(Integer userId) {
+        RequestResponse requestResponse = new RequestResponse();
+        Optional<Order> order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN);
+        if (order.isEmpty()) {
+            createNewOrder(userId);
+            requestResponse.setMessage("New empty order was created.");
+        } else {
+            requestResponse.setMessage("User already has an open order.");
+        }
+        return requestResponse;
+    }
+
 
     public Order createNewOrder(Integer userId) {
         Order order = new Order();
@@ -140,6 +157,7 @@ public class OrderService {
         return shoppingCartDto;
 
     }
+
 }
 
 //remove item from cart
