@@ -1,6 +1,7 @@
 package ee.bcs.eetsy.domain.shoppingcart;
 
 
+import ee.bcs.eetsy.domain.RequestResponse;
 import ee.bcs.eetsy.domain.item.ItemRepository;
 import ee.bcs.eetsy.domain.sub_group.SubGroupResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,11 +26,10 @@ public class OrderController {
     private OrderItemMapper orderItemMapper;
 
 
-    @PutMapping("/add/orderitem/to/cart")
+    @PostMapping("/add/orderitem/to/cart")
     @Operation(summary = "add oder item to shopping cart ")
-    public OrderItemResponse addItemToCart(@RequestBody OrderItemRequest orderItemRequest) {
-        OrderItem orderItem = orderService.createOrderItem(orderItemRequest);
-        OrderItemResponse response = orderItemMapper.orderItemToOrderItemResponse(orderItem);
+    public RequestResponse addItemToCart(@RequestBody OrderItemRequest orderItemRequest) {
+        RequestResponse response = orderService.createOrderItem(orderItemRequest);
         return response;
     }
 

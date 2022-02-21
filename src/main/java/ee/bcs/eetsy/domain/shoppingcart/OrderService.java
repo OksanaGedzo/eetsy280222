@@ -1,11 +1,15 @@
 package ee.bcs.eetsy.domain.shoppingcart;
+
+import ee.bcs.eetsy.domain.RequestResponse;
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodRepository;
 import ee.bcs.eetsy.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.net.ResponseCache;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
@@ -41,20 +45,28 @@ public class OrderService {
     private PaymentMethodRepository paymentMethodRepository;
 
 
-    public OrderItem createOrderItem(OrderItemRequest orderItemRequest) {
+    public RequestResponse createOrderItem(OrderItemRequest orderItemRequest) {
         OrderItem orderItem = new OrderItem();
+        RequestResponse response = new RequestResponse();
         Integer userId = orderItemRequest.getUserId();
-        Integer itemId= orderItemRequest.getItemId();
+        Integer itemId = orderItemRequest.getItemId();
         Integer quantity = orderItemRequest.getQuantity();
-        Order order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN).get();
-        Item item = itemRepository.findById(itemId).get();
-        orderItem.setOrder(order);
-        orderItem.setQuantity(quantity);
-        orderItem.setItem(item);
-        BigDecimal itemSum = calculateOrderItemSum(quantity, item.getPrice());
-        orderItem.setSum(itemSum);
-        orderItemRepository.save(orderItem);
-        return orderItem;
+        if (userRepository.existsById(userId) && itemRepository.existsById(itemId) && quantity > 0) {
+            Order order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN).get();
+
+            Item item = itemRepository.findById(itemId).get();
+            orderItem.setOrder(order);
+            orderItem.setQuantity(quantity);
+            orderItem.setItem(item);
+            BigDecimal itemSum = calculateOrderItemSum(quantity, item.getPrice());
+            orderItem.setSum(itemSum);
+            orderItemRepository.save(orderItem);
+            response.setMessage("order item added to cart");
+            return response;
+        } else {
+             response.setError(" order item not added itemId or userId or quantity error ");
+            return response;
+        }
     }
 
     public BigDecimal calculateOrderItemSum(Integer amount, BigDecimal price) {
@@ -79,7 +91,7 @@ public class OrderService {
         if (order.isEmpty()) {
             Order newOrder = createNewOrder(userId);
             return newOrder.getId();
-        }else{
+        } else {
             Order newOrder = order.get();
             return newOrder.getId();
 
