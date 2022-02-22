@@ -13,5 +13,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUserNameAndPassword(String userName, String password);
 
 
+    @Query("select u from User u where u.id = ?1")
+    Optional<User> findAllUsersById(Integer integer);
+
+    @Query("select (count(u) > 0) from User u where upper(u.userName) = upper(?1)")
+    boolean existsByUserName(String userName);
+
 
 }

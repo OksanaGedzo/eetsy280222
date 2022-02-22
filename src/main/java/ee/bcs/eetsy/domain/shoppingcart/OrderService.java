@@ -5,7 +5,6 @@ import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodDto;
 import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodService;
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
-import ee.bcs.eetsy.domain.paymentmethod.PaymentMethod;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodDto;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodRepository;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodService;
@@ -119,7 +118,7 @@ public class OrderService {
         Order order = new Order();
         order.setOrderNumber(createOrderNumber());
         order.setOrderStatus(ORDER_OPEN);
-        order.setUser(userRepository.findById(userId).get());
+        order.setUser(userRepository.findAllUsersById(userId).get());
         order.setOrderDate(Instant.now());
         order.setPaymentMethod(paymentMethodRepository.findAll().get(0));
         order.setTotalPrice(BigDecimal.ZERO);

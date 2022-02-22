@@ -1,6 +1,7 @@
 package ee.bcs.eetsy.domain.user;
 
 
+import ee.bcs.eetsy.domain.RequestResponse;
 import ee.bcs.eetsy.domain.shoppingcart.OrderItem;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,15 @@ public class UserController {
         int id = userService.findUserIdByUsernameAndPassword(username,password);
         return id;
     }
+
+    @GetMapping("/check/if/user/exist")
+    @Operation(summary = " checking if user exists")
+    public Boolean checkIfUserExists(@RequestParam String username) {
+       boolean userCheck = userService.checkIfUserExists(username);
+        return userCheck;
+
+    }
+
 
 }
 
