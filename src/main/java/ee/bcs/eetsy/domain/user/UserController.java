@@ -5,11 +5,10 @@ import ee.bcs.eetsy.domain.RequestResponse;
 import ee.bcs.eetsy.domain.shoppingcart.OrderItem;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @RestController
 public class UserController {
@@ -30,6 +29,12 @@ public class UserController {
        boolean userCheck = userService.checkIfUserExists(username);
         return userCheck;
 
+    }
+    @PostMapping("/add/new/user")
+    @Operation(summary = "adds new user")
+    public UserDto addNewUser(@Valid @RequestBody User request) {
+//        CustomerResponse response.userService.addNewUser(request);
+//        return response;
     }
 
 
