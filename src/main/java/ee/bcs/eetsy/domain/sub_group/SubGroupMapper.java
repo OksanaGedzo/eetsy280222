@@ -11,6 +11,7 @@ public interface SubGroupMapper {
     SubGroupDto subGroupToSubGroupDto(SubGroup subGroup);
 
 
+    @Mapping(target = "id", source = "id")
     @Mapping(target = "pictureData", source = "picture.data")
     @Mapping(target = "name", source = "name")
     SubGroupResponse subGroupToSubGroupResponse(SubGroup subGroups);
