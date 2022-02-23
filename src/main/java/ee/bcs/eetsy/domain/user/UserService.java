@@ -42,4 +42,11 @@ public class UserService {
         response.setMessage("user created");
         return response;
     }
+
+    public UserDto findUserInfoById(Integer id) {
+        User user = userRepository.findById(id).get();
+        UserDto userDto = userMapper.userToUserDto(user);
+        return userDto;
+
+    }
 }

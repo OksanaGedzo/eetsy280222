@@ -23,6 +23,7 @@ public class UserController {
         return id;
     }
 
+
     @GetMapping("/check/if/user/exist")
     @Operation(summary = " checking if user exists")
     public Boolean checkIfUserExists(@RequestParam String username) {
@@ -36,6 +37,13 @@ public class UserController {
     public RequestResponse addNewUser(@RequestBody UserDto userDto) {
         RequestResponse response = userService.addNewUser(userDto);
         return response;
+    }
+
+    @GetMapping("/get/user/info/by/id")
+    @Operation(summary = " to retrieve user information ")
+    public UserDto getUserInfoById(@RequestParam Integer id) {
+        UserDto userDto = userService.findUserInfoById(id);
+        return userDto;
     }
 
 
