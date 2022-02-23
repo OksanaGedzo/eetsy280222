@@ -1,5 +1,9 @@
 package ee.bcs.eetsy.domain.user;
 
+import ee.bcs.eetsy.domain.RequestResponse;
+import ee.bcs.eetsy.domain.contact.Contact;
+import ee.bcs.eetsy.domain.contact.ContactDto;
+import ee.bcs.eetsy.domain.contact.ContactRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -11,6 +15,9 @@ public class UserService {
 
     @Resource
     UserRepository userRepository;
+
+    @Resource
+    ContactRepository contactRepository;
 
     @Resource
     UserMapper userMapper;
@@ -26,5 +33,13 @@ public class UserService {
 
     }
 
-
+    public RequestResponse addNewUser(UserDto userDto) {
+        RequestResponse response = new RequestResponse();
+        Contact contact = userDto.getContact();
+        contactRepository.save(contact);
+        User user = userMapper.userDtoToUser(userDto);
+        userRepository.save(user);
+        response.setMessage("user created");
+        return response;
+    }
 }

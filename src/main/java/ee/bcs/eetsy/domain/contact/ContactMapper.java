@@ -8,6 +8,9 @@ public interface ContactMapper {
 
     ContactDto contactToContactDto(Contact contact);
 
+
+
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateContactFromContactDto(ContactDto contactDto, @MappingTarget Contact contact);
 }

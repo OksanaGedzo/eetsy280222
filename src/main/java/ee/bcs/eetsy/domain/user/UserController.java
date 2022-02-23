@@ -19,22 +19,23 @@ public class UserController {
     @GetMapping("/login")
     @Operation(summary = " this is login info")
     public Integer getUserIdByUsernameAndPassword(@RequestParam String username, @RequestParam String password) {
-        int id = userService.findUserIdByUsernameAndPassword(username,password);
+        int id = userService.findUserIdByUsernameAndPassword(username, password);
         return id;
     }
 
     @GetMapping("/check/if/user/exist")
     @Operation(summary = " checking if user exists")
     public Boolean checkIfUserExists(@RequestParam String username) {
-       boolean userCheck = userService.checkIfUserExists(username);
+        boolean userCheck = userService.checkIfUserExists(username);
         return userCheck;
 
     }
+
     @PostMapping("/add/new/user")
     @Operation(summary = "adds new user")
-    public UserDto addNewUser(@Valid @RequestBody User request) {
-//        CustomerResponse response.userService.addNewUser(request);
-//        return response;
+    public RequestResponse addNewUser(@RequestBody UserDto userDto) {
+        RequestResponse response = userService.addNewUser(userDto);
+        return response;
     }
 
 
