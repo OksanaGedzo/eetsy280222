@@ -172,31 +172,31 @@ public class OrderService {
     //////////////////////////////////////// SEE JAMA IKKA ANNAB VASTUSE SWAGERIS //////////////////////////////////
 
 
-    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
-        RequestResponse requestResponse = new RequestResponse();
-        Integer userId = orderConfirmationRequestDto.getUserId();
-        Integer id = orderConfirmationRequestDto.getId();
-        Optional<Order> order = orderRepository.findById(id);
-        if (order.isEmpty()) {
-            createOrderInProgress(userId);
-            requestResponse.setMessage("ORDER IN PROGRESS.");
-        } else {
-            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
-        }
-        return requestResponse;
-    }
-
-    public Order createOrderInProgress(Integer userId) {
-        Order order = new Order();
-        order.setOrderNumber(createOrderNumber());
-        order.setOrderStatus(ORDER_IN_PROGRESS);
-        order.setUser(userRepository.findById(userId).get());
-        order.setOrderDate(Instant.now());
-        order.setPaymentMethod(paymentMethodRepository.findAll().get(0));
-        order.setTotalPrice(BigDecimal.ZERO);
-        orderRepository.save(order);
-        return order;
-    }
+//    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+//        RequestResponse requestResponse = new RequestResponse();
+//        Integer userId = orderConfirmationRequestDto.getUserId();
+//        Integer id = orderConfirmationRequestDto.getId();
+//        Optional<Order> order = orderRepository.findById(id);
+//        if (order.isEmpty()) {
+//            createOrderInProgress(userId);
+//            requestResponse.setMessage("ORDER IN PROGRESS.");
+//        } else {
+//            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
+//        }
+//        return requestResponse;
+//    }
+//
+//    public Order createOrderInProgress(Integer userId) {
+//        Order order = new Order();
+//        order.setOrderNumber(createOrderNumber());
+//        order.setOrderStatus(ORDER_IN_PROGRESS);
+//        order.setUser(userRepository.findById(userId).get());
+//        order.setOrderDate(Instant.now());
+//        order.setPaymentMethod(paymentMethodRepository.findAll().get(0));
+//        order.setTotalPrice(BigDecimal.ZERO);
+//        orderRepository.save(order);
+//        return order;
+//    }
 
 //////////////////////////////////////////SIIN ON VIIMANE VERSION KOLMAPÄEVALT ///////////////////////////////////////////
 
@@ -286,42 +286,45 @@ public class OrderService {
 //    }
 
 
-//    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
-//        RequestResponse requestResponse = new RequestResponse();
-//        Integer userId = orderConfirmationRequestDto.getUserId();
-//        Optional<Order> orderOpen = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN);
-//        if (!orderOpen.isEmpty()) {
-//            Order order = new Order();
-//            order.setId(orderConfirmationRequestDto.getId());
-//            order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
-//            order.setOrderDate(orderConfirmationRequestDto.getOrderDate());
-//            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
-//            order.setOrderStatus(ORDER_IN_PROGRESS);
-//            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
-//
-//            PaymentMethodDto paymentMethodDto = orderConfirmationRequestDto.getPaymentMethodDto();
-//            PaymentMethod paymentMethod = paymentMethodMapper.paymentMethodDtoToPaymentMethod(paymentMethodDto);
-//            order.setPaymentMethod(paymentMethod);
-//
-//            List<OrderItemDto> orderItemDtos = orderConfirmationRequestDto.getOrderItemsDto();
-//            List<OrderItem> orderItems = orderItemMapper.orderItemDtosToOrderItems(orderItemDtos);
-//
-//            DeliveryMethodDto deliveryMethodDto = orderConfirmationRequestDto.getDeliveryMethodDto();
-//            DeliveryMethod deliveryMethod = deliveryMethodMapper.deliveryMethodDtoToDeliveryMethod(deliveryMethodDto);
-//            Delivery delivery = new Delivery();
-//            delivery.setDeliveryMethod(deliveryMethod);
-//            delivery.setOrder(order);
-//
-//            orderRepository.save(order);
-//            deliveryRepository.save(delivery);
-//            orderItemRepository.saveAll(orderItems);
-//
-//            requestResponse.setMessage("ORDER IN PROGRESS.");
-//        } else {
-//            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
-//        }
-//        return requestResponse;
-//    }
+    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+        RequestResponse requestResponse = new RequestResponse();
+        Integer userId = orderConfirmationRequestDto.getUserId();
+        Optional<Order> orderOpen = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN);
+
+        if (!orderOpen.isEmpty()) {
+//          Order order = new Order();      kuna me uuendame eksisteerivat orderit siis me ei tohi uut orderit teha
+            Order order = orderOpen.get();
+//         order.setId(orderConfirmationRequestDto.getId());     id'd ei ei ole vaja settida kuna updatime olemasolevat orderit
+            order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
+//          order.setOrderDate(orderConfirmationRequestDto.getOrderDate()); // getOrderDate()=null kuna frondis me ei pane talle väärtust
+            order.setOrderDate(Instant.now()); // setime orderDate kuna front ei pane kaasa hetkest kellaaega
+            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
+            order.setOrderStatus(ORDER_IN_PROGRESS);
+//          order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());     real 301 juba kutsusime
+
+            PaymentMethodDto paymentMethodDto = orderConfirmationRequestDto.getPaymentMethodDto();
+            PaymentMethod paymentMethod = paymentMethodMapper.paymentMethodDtoToPaymentMethod(paymentMethodDto);
+            order.setPaymentMethod(paymentMethod);
+
+            List<OrderItemDto> orderItemDtos = orderConfirmationRequestDto.getOrderItemsDto();
+            List<OrderItem> orderItems = orderItemMapper.orderItemDtosToOrderItems(orderItemDtos); //orderItemitel puudub Seller info
+            // todo set seller field with a for loop
+            DeliveryMethodDto deliveryMethodDto = orderConfirmationRequestDto.getDeliveryMethodDto();
+            DeliveryMethod deliveryMethod = deliveryMethodMapper.deliveryMethodDtoToDeliveryMethod(deliveryMethodDto);
+            Delivery delivery = new Delivery();
+            delivery.setDeliveryMethod(deliveryMethod);
+            delivery.setOrder(order);
+
+            orderRepository.save(order);
+            deliveryRepository.save(delivery);
+            orderItemRepository.saveAll(orderItems);
+
+            requestResponse.setMessage("ORDER IN PROGRESS.");
+        } else {
+            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
+        }
+        return requestResponse;
+    }
 
 
 //    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
