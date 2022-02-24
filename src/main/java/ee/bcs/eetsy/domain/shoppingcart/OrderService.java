@@ -169,6 +169,22 @@ public class OrderService {
     }
 
 
+    //////////////////////////////////////// SEE JAMA IKKA ANNAB VASTUSE SWAGERIS //////////////////////////////////
+
+
+    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+        RequestResponse requestResponse = new RequestResponse();
+        Integer userId = orderConfirmationRequestDto.getUserId();
+        Integer id = orderConfirmationRequestDto.getId();
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isEmpty()) {
+            createOrderInProgress(userId);
+            requestResponse.setMessage("ORDER IN PROGRESS.");
+        } else {
+            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
+        }
+        return requestResponse;
+    }
 
     public Order createOrderInProgress(Integer userId) {
         Order order = new Order();
@@ -182,21 +198,39 @@ public class OrderService {
         return order;
     }
 
-    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
-        RequestResponse requestResponse = new RequestResponse();
-        Integer userId = orderConfirmationRequestDto.getUserId();
-        Integer id = orderConfirmationRequestDto.getId();
-        Optional<Order> order = orderRepository.findById(id);
-//        Optional<Order> order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_IN_PROGRESS);
-        if (order.isEmpty()) {
-            createOrderInProgress(userId);
-            requestResponse.setMessage("ORDER IN PROGRESS.");
-        } else {
-            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
-        }
-        return requestResponse;
-    }
+//////////////////////////////////////////SIIN ON VIIMANE VERSION KOLMAPÄEVALT ///////////////////////////////////////////
 
+//    public RequestResponse confirmClientOrder(OrderConfirmationDto orderConfirmationDto) {
+//        RequestResponse requestResponse = new RequestResponse();
+//
+//        OrderDtoRequest orderDtoRequest = orderConfirmationDto.getOrderDtoRequest();
+//
+//        Order order = new Order();
+//        order.setUser(userRepository.findById(orderConfirmationDto.getOrderDtoRequest().getId()).get());
+//        order.setOrderDate(orderConfirmationDto.getOrderDtoRequest().getOrderDate());
+//        order.setOrderStatus(orderConfirmationDto.getOrderDtoRequest().getOrderStatus());
+//        order.setOrderNumber(orderConfirmationDto.getOrderDtoRequest().getOrderNumber());
+//        order.setTotalPrice(orderConfirmationDto.getOrderDtoRequest().getTotalPrice());
+////        order.setPaymentMethod(orderConfirmationDto.getOrderDtoRequest().getPaymentMethod().getId();
+//        PaymentMethodDto paymentMethodDto = orderConfirmationDto.getOrderDtoRequest().getPaymentMethod();
+//        paymentMethodRepository.find;
+//
+//        List<OrderItemDto> orderItemDtos = orderConfirmationDto.getOrderItemDtos();
+//        List<OrderItem> orderItems = orderItemMapper.orderItemDtoToOrderItems(orderItemDtos);
+//
+//        DeliveryMethod deliveryMethod = orderConfirmationDto.getDeliveryMethod();
+//
+//        Delivery delivery = new Delivery();
+//        delivery.setDeliveryMethod(deliveryMethod);
+//        delivery.setOrder(order);
+//
+//        orderRepository.save(order);
+//        orderItemRepository.saveAll(orderItems);
+//        return requestResponse;
+//    }
+
+
+    //////////////////////////////////////// kala kala kala //////////////////////////////////////////////////////
 
 
 //    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
@@ -206,7 +240,7 @@ public class OrderService {
 ////        Optional<Order> order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_IN_PROGRESS);
 //        if (order.isEmpty()) {
 //            Order order = new Order();
-////order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
+////          order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
 //            order.setOrderDate(orderConfirmationRequestDto.getOrderDate());
 //            order.setOrderStatus(ORDER_IN_PROGRESS);
 //            order.setId(orderConfirmationRequestDto.getId());
@@ -250,9 +284,6 @@ public class OrderService {
 //        orderItemRepository.saveAll(orderItems);
 //        return requestResponse;
 //    }
-
-
-
 
 
 //    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
