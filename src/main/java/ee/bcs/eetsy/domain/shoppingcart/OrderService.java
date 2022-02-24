@@ -168,22 +168,130 @@ public class OrderService {
 
     }
 
+
+
+    public Order createOrderInProgress(Integer userId) {
+        Order order = new Order();
+        order.setOrderNumber(createOrderNumber());
+        order.setOrderStatus(ORDER_IN_PROGRESS);
+        order.setUser(userRepository.findById(userId).get());
+        order.setOrderDate(Instant.now());
+        order.setPaymentMethod(paymentMethodRepository.findAll().get(0));
+        order.setTotalPrice(BigDecimal.ZERO);
+        orderRepository.save(order);
+        return order;
+    }
+
     public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
         RequestResponse requestResponse = new RequestResponse();
-
         Integer userId = orderConfirmationRequestDto.getUserId();
         Integer id = orderConfirmationRequestDto.getId();
-
         Optional<Order> order = orderRepository.findById(id);
 //        Optional<Order> order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_IN_PROGRESS);
         if (order.isEmpty()) {
-            createNewOrder(userId);
+            createOrderInProgress(userId);
             requestResponse.setMessage("ORDER IN PROGRESS.");
         } else {
             requestResponse.setMessage("UPS!SOMTHING IS WRONG");
         }
         return requestResponse;
     }
+
+
+
+//    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+//        RequestResponse requestResponse = new RequestResponse();
+//        Integer id = orderConfirmationRequestDto.getId();
+//        Optional<Order> order = orderRepository.findById(id);
+////        Optional<Order> order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_IN_PROGRESS);
+//        if (order.isEmpty()) {
+//            Order order = new Order();
+////order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
+//            order.setOrderDate(orderConfirmationRequestDto.getOrderDate());
+//            order.setOrderStatus(ORDER_IN_PROGRESS);
+//            order.setId(orderConfirmationRequestDto.getId());
+//            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
+//
+//            orderRepository.save(order);
+//            requestResponse.setMessage("ORDER IN PROGRESS.");
+//        } else {
+//            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
+//        }
+//        return requestResponse;
+//    }
+//
+
+
+    //    public RequestResponse confirmClientOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+//        RequestResponse requestResponse = new RequestResponse();
+//
+//        Order order = new Order();
+//        order.setUser(userRepository.findById(orderConfirmationRequestDto.getId()).get());
+//        order.setOrderDate(orderConfirmationRequestDto.getOrderDate());
+//        order.setOrderStatus(orderConfirmationRequestDto.getOrderStatus());
+//        order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
+//        order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
+//
+//        PaymentMethodDto paymentMethodDto = orderConfirmationRequestDto.getPaymentMethodDto();
+//        PaymentMethod paymentMethod = paymentMethodMapper.paymentMethodDtoToPaymentMethod(paymentMethodDto);
+//        order.setPaymentMethod(paymentMethod);
+//
+//        List<OrderItemDto> orderItemDtos = orderConfirmationRequestDto.getOrderItemsDto();
+//        List<OrderItem> orderItems = orderItemMapper.orderItemDtosToOrderItems(orderItemDtos);
+//
+//        DeliveryMethodDto deliveryMethodDto = orderConfirmationRequestDto.getDeliveryMethodDto();
+//        DeliveryMethod deliveryMethod = deliveryMethodMapper.deliveryMethodDtoToDeliveryMethod(deliveryMethodDto);
+//
+//        Delivery delivery = new Delivery();
+//        delivery.setDeliveryMethod(deliveryMethod);
+//        delivery.setOrder(order);
+//
+//        orderRepository.save(order);
+//        orderItemRepository.saveAll(orderItems);
+//        return requestResponse;
+//    }
+
+
+
+
+
+//    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+//        RequestResponse requestResponse = new RequestResponse();
+//        Integer userId = orderConfirmationRequestDto.getUserId();
+//        Optional<Order> orderOpen = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN);
+//        if (!orderOpen.isEmpty()) {
+//            Order order = new Order();
+//            order.setId(orderConfirmationRequestDto.getId());
+//            order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
+//            order.setOrderDate(orderConfirmationRequestDto.getOrderDate());
+//            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
+//            order.setOrderStatus(ORDER_IN_PROGRESS);
+//            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
+//
+//            PaymentMethodDto paymentMethodDto = orderConfirmationRequestDto.getPaymentMethodDto();
+//            PaymentMethod paymentMethod = paymentMethodMapper.paymentMethodDtoToPaymentMethod(paymentMethodDto);
+//            order.setPaymentMethod(paymentMethod);
+//
+//            List<OrderItemDto> orderItemDtos = orderConfirmationRequestDto.getOrderItemsDto();
+//            List<OrderItem> orderItems = orderItemMapper.orderItemDtosToOrderItems(orderItemDtos);
+//
+//            DeliveryMethodDto deliveryMethodDto = orderConfirmationRequestDto.getDeliveryMethodDto();
+//            DeliveryMethod deliveryMethod = deliveryMethodMapper.deliveryMethodDtoToDeliveryMethod(deliveryMethodDto);
+//            Delivery delivery = new Delivery();
+//            delivery.setDeliveryMethod(deliveryMethod);
+//            delivery.setOrder(order);
+//
+//            orderRepository.save(order);
+//            deliveryRepository.save(delivery);
+//            orderItemRepository.saveAll(orderItems);
+//
+//            requestResponse.setMessage("ORDER IN PROGRESS.");
+//        } else {
+//            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
+//        }
+//        return requestResponse;
+//    }
+
 
 //    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
 //
@@ -227,9 +335,6 @@ public class OrderService {
 //            return response;
 //        }
 //    }
-
-
-
 
 
 }
