@@ -1,14 +1,15 @@
 package ee.bcs.eetsy.domain.shoppingcart;
 
 import ee.bcs.eetsy.domain.RequestResponse;
+import ee.bcs.eetsy.domain.delivery.Delivery;
+import ee.bcs.eetsy.domain.delivery.DeliveryRepository;
+import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethod;
 import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodDto;
+import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodMapper;
 import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodService;
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
-import ee.bcs.eetsy.domain.paymentmethod.PaymentMethod;
-import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodDto;
-import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodRepository;
-import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodService;
+import ee.bcs.eetsy.domain.paymentmethod.*;
 import ee.bcs.eetsy.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +49,15 @@ public class OrderService {
     private PaymentMethodService paymentMethodService;
     @Resource
     private DeliveryMethodService deliveryMethodService;
+
+    @Resource
+    private DeliveryMethodMapper deliveryMethodMapper;
+
+    @Resource
+    private DeliveryRepository deliveryRepository;
+
+    @Resource
+    private PaymentMethodMapper paymentMethodMapper;
 
 
     public RequestResponse createOrderItem(OrderItemRequest orderItemRequest) {
@@ -157,6 +167,70 @@ public class OrderService {
         return shoppingCartDto;
 
     }
+
+    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+        RequestResponse requestResponse = new RequestResponse();
+
+        Integer userId = orderConfirmationRequestDto.getUserId();
+        Integer id = orderConfirmationRequestDto.getId();
+
+        Optional<Order> order = orderRepository.findById(id);
+//        Optional<Order> order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_IN_PROGRESS);
+        if (order.isEmpty()) {
+            createNewOrder(userId);
+            requestResponse.setMessage("ORDER IN PROGRESS.");
+        } else {
+            requestResponse.setMessage("UPS!SOMTHING IS WRONG");
+        }
+        return requestResponse;
+    }
+
+//    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+//
+//        RequestResponse response = new RequestResponse();
+//
+//        Integer id = orderConfirmationRequestDto.getId();
+//        Integer userId = orderConfirmationRequestDto.getUserId();
+//
+//
+//        if( orderRepository.existsById(id) ){
+//            Order order = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_IN_PROGRESS).get();
+//
+//            List<OrderItemDto> orderItemDtos = orderConfirmationRequestDto.getOrderItemsDtos();
+//            List<OrderItem> orderItems = orderItemMapper.orderItemDtosToOrderItems(orderItemDtos);
+//
+//            PaymentMethodDto paymentMethodDto = orderConfirmationRequestDto.getPaymentMethodDto();
+//            PaymentMethod paymentMethod = paymentMethodMapper.paymentMethodDtoToPaymentMethod(paymentMethodDto);
+//
+//            order.setId(orderConfirmationRequestDto.getId());
+//            order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
+//            order.setOrderDate(orderConfirmationRequestDto.getOrderDate());
+//            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
+//            order.setOrderStatus(ORDER_IN_PROGRESS);
+//            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
+//            order.setPaymentMethod(paymentMethod);
+//
+//            DeliveryMethodDto deliveryMethodDto = orderConfirmationRequestDto.getDeliveryMethodDto();
+//            DeliveryMethod deliveryMethod = deliveryMethodMapper.deliveryMethodDtoToDeliveryMethod(deliveryMethodDto);
+//            Delivery delivery = new Delivery();
+//            delivery.setDeliveryMethod(deliveryMethod);
+//            delivery.setOrder(order);
+//
+//            RequestResponse requestResponse = orderMapper.orderToRequestResponse(order);
+//            deliveryRepository.save(delivery);
+//            orderItemRepository.saveAll(orderItems);
+//
+//            response.setMessage("Order in progress");
+//            return response;
+//        } else {
+//            response.setError(" Order not added, check out errors ");
+//            return response;
+//        }
+//    }
+
+
+
+
 
 }
 

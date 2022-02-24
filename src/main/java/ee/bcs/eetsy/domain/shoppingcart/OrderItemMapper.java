@@ -1,15 +1,11 @@
 package ee.bcs.eetsy.domain.shoppingcart;
 
-import ee.bcs.eetsy.domain.item.ItemDto;
 import org.mapstruct.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface OrderItemMapper {
-    OrderItem orderItemDtoToOrderItem(OrderItemDto cartItemDto);
-
 
     @Mapping(target = "itemId", source = "item.id")
     @Mapping(target = "itemName", source = "item.name")
@@ -28,6 +24,16 @@ public interface OrderItemMapper {
     @Mapping(target = "itemDescription", source = "item.description")
     OrderItemResponse orderItemToOrderItemResponse (OrderItem orderItem);
     List<OrderItemResponse> orderItemsToOrderItemsResponses (List<OrderItem> orderItems);
+
+
+    OrderItem orderItemDtoToOrderItemResponse (OrderItemDto orderItemDto);
+    List<OrderItem> orderItemDtosToOrderItems(List<OrderItemDto> orderItemDto);
+
+
+
+
+
+
 
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

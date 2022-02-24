@@ -59,6 +59,21 @@ public class OrderController {
         ShoppingCartDto response = orderService.shoppingCartResource(userId);
         return response;
     }
+    @PostMapping("/post/order/to/orders/in/progress")
+    @Operation(summary = "Post order confirmation in orders statusega inProgress")
+    public RequestResponse confirmOrderRequestDto(@RequestBody OrderConfirmationRequestDto orderConfirmationRequestDto) {
+        RequestResponse response = orderService.confirmOrder(orderConfirmationRequestDto);
+        return response;
+    }
+
+
+//    @PostMapping("/post/order/to/orders/in/progress")
+//    @Operation(summary = "Post order confirmation in orders statusega inProgress")
+//    public OrderConfirmationResponse confirmOrderRequestDto(@RequestBody OrderConfirmationRequestDto orderConfirmationRequestDto) {
+//        OrderConfirmationResponse response = orderService.confirmOrderRequest(orderConfirmationRequestDto);
+//        return response;
+//    }
+
 
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface PaymentMethodMapper {
+
+    @Mapping(target = "paymantType", source = "paymentType")
     PaymentMethod paymentMethodDtoToPaymentMethod(PaymentMethodDto paymentMethodDto);
 
     @Mapping(target = "id", source = "id")
