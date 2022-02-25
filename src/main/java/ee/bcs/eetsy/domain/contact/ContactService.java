@@ -14,7 +14,6 @@ public class ContactService {
     @Resource
     ContactMapper contactMapper;
 
-
     public RequestResponse updateContactInfo(ContactDto contactDto) {
         RequestResponse response = new RequestResponse();
         Contact contact = contactMapper.contactDtoToContact(contactDto);
