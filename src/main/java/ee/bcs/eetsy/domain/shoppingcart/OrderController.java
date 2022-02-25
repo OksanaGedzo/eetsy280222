@@ -59,6 +59,7 @@ public class OrderController {
         ShoppingCartDto response = orderService.shoppingCartResource(userId);
         return response;
     }
+
     @PostMapping("/post/order/to/orders/in/progress")
     @Operation(summary = "Post order confirmation in orders statusega inProgress")
     public RequestResponse confirmOrderRequestDto(@RequestBody OrderConfirmationRequestDto orderConfirmationRequestDto) {
@@ -67,19 +68,7 @@ public class OrderController {
     }
 
 
-//    @PostMapping("/post/order/to/orders/in/progress")
-//    @Operation(summary = "Post order confirmation in orders statusega inProgress")
-//    public OrderConfirmationResponse confirmOrderRequestDto(@RequestBody OrderConfirmationRequestDto orderConfirmationRequestDto) {
-//        OrderConfirmationResponse response = orderService.confirmOrderRequest(orderConfirmationRequestDto);
-//        return response;
-//    }
-
-
-
 }
 
 
-//    public List<SubGroupResponse> getSubGroupsByPrimaryGroupId(@RequestParam Integer id) {
-//        List<SubGroupResponse> response = subGroupService.findSubGroupsNameAndPicture(id);
-//        return response;
-//}
+

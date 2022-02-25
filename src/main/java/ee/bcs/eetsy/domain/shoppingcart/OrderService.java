@@ -190,7 +190,7 @@ public class OrderService {
             List<OrderItem> orderItems = orderItemMapper.orderItemDtosToOrderItems(orderItemDtos);
             Integer i = 0;
             for (OrderItem orderItem : orderItems
-                 ) {
+            ) {
                 orderItem.setOrder(order);
                 orderItem.setItem(itemRepository.getById(orderItemDtos.get(i).getItemId()));
                 i++;
@@ -213,6 +213,7 @@ public class OrderService {
 
 
 }
+
 
 //remove item from cart
 //update quantity
