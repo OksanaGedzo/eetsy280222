@@ -167,6 +167,7 @@ ALTER TABLE delivery ADD CONSTRAINT delivery_order
 ALTER TABLE item_picture ADD CONSTRAINT item_picture_item
     FOREIGN KEY (item_id)
         REFERENCES item (id)
+        ON DELETE  CASCADE
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
@@ -191,6 +192,7 @@ ALTER TABLE item ADD CONSTRAINT item_seller
 ALTER TABLE order_item ADD CONSTRAINT order_item_item
     FOREIGN KEY (item_id)
         REFERENCES item (id)
+        ON DELETE  CASCADE
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
@@ -239,6 +241,7 @@ ALTER TABLE seller ADD CONSTRAINT seller_picture
 ALTER TABLE sub_group ADD CONSTRAINT sub_group_item
     FOREIGN KEY (item_id)
         REFERENCES item (id)
+        ON DELETE  CASCADE
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
