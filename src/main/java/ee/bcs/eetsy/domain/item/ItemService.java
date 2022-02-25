@@ -78,6 +78,17 @@ public class ItemService {
         }
         Item item = itemMapper.itemRequestToItem(itemRequest);
         item.setSeller(seller.get());
+        itemRepository.save(item);
+
+        String subGroupName = itemRequest.getSubGroupName();
+        SubGroup subGroup = new SubGroup();
+        subGroup.setName(subGroupName);
+        subGroup.setItem(item);
+        SubGroup templateSubGroup = subGroupRepository.findFirstByName(subGroupName).get(0);
+        subGroup.setPicture(templateSubGroup.getPicture());
+        subGroup.setPrimaryGroup(templateSubGroup.getPrimaryGroup());
+        subGroupRepository.save(subGroup);
+
         response.setMessage("Item Added");
         return response;
     }

@@ -26,7 +26,7 @@ public class SubGroupService {
     }
 
     public List<SubGroupItemResponse> findItemsBySubGroupName(String name) {
-        List<SubGroup> subGroup = subGroupRepository.findByNameIgnoreCase(name);
+        List<SubGroup> subGroup = subGroupRepository.findListByNameIgnoreCase(name);
         List<SubGroupItemResponse> subGroupItemResponses = subGroupMapper.toSubGroupItemResponses(subGroup);
         return subGroupItemResponses;
     }
