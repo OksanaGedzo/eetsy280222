@@ -1,10 +1,16 @@
 package ee.bcs.eetsy.domain.shoppingcart;
 
 import ee.bcs.eetsy.domain.RequestResponse;
+import ee.bcs.eetsy.domain.delivery.Delivery;
+import ee.bcs.eetsy.domain.delivery.DeliveryRepository;
+import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethod;
 import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodDto;
+import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodMapper;
 import ee.bcs.eetsy.domain.deliverymethod.DeliveryMethodService;
 import ee.bcs.eetsy.domain.item.Item;
 import ee.bcs.eetsy.domain.item.ItemRepository;
+import ee.bcs.eetsy.domain.paymentmethod.*;
+import ee.bcs.eetsy.domain.user.User;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodDto;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodRepository;
 import ee.bcs.eetsy.domain.paymentmethod.PaymentMethodService;
@@ -47,6 +53,15 @@ public class OrderService {
     private PaymentMethodService paymentMethodService;
     @Resource
     private DeliveryMethodService deliveryMethodService;
+
+    @Resource
+    private DeliveryMethodMapper deliveryMethodMapper;
+
+    @Resource
+    private DeliveryRepository deliveryRepository;
+
+    @Resource
+    private PaymentMethodMapper paymentMethodMapper;
 
 
     public RequestResponse createOrderItem(OrderItemRequest orderItemRequest) {
@@ -118,7 +133,7 @@ public class OrderService {
         Order order = new Order();
         order.setOrderNumber(createOrderNumber());
         order.setOrderStatus(ORDER_OPEN);
-        order.setUser(userRepository.findAllUsersById(userId).get());
+        order.setUser(userRepository.findById(userId).get());
         order.setOrderDate(Instant.now());
         order.setPaymentMethod(paymentMethodRepository.findAll().get(0));
         order.setTotalPrice(BigDecimal.ZERO);
@@ -156,6 +171,49 @@ public class OrderService {
         return shoppingCartDto;
 
     }
+
+
+    public RequestResponse confirmOrder(OrderConfirmationRequestDto orderConfirmationRequestDto) {
+        RequestResponse requestResponse = new RequestResponse();
+        Integer userId = orderConfirmationRequestDto.getUserId();
+        Optional<Order> orderOpen = orderRepository.findByUserIdAndOrderStatus(userId, ORDER_OPEN);
+
+        if (!orderOpen.isEmpty()) {
+
+            Order order = orderOpen.get();
+            order.setOrderNumber(orderConfirmationRequestDto.getOrderNumber());
+            order.setOrderDate(Instant.now());
+            order.setTotalPrice(orderConfirmationRequestDto.getTotalPrice());
+            order.setOrderStatus(ORDER_IN_PROGRESS);
+            PaymentMethodDto paymentMethodDto = orderConfirmationRequestDto.getPaymentMethodDto();
+            PaymentMethod paymentMethod = paymentMethodMapper.paymentMethodDtoToPaymentMethod(paymentMethodDto);
+            order.setPaymentMethod(paymentMethod);
+
+            List<OrderItemDto> orderItemDtos = orderConfirmationRequestDto.getOrderItemDto();
+            List<OrderItem> orderItems = orderItemMapper.orderItemDtosToOrderItems(orderItemDtos);
+            Integer i = 0;
+            for (OrderItem orderItem : orderItems
+            ) {
+                orderItem.setOrder(order);
+                orderItem.setItem(itemRepository.getById(orderItemDtos.get(i).getItemId()));
+                i++;
+            }
+            DeliveryMethodDto deliveryMethodDto = orderConfirmationRequestDto.getDeliveryMethodDto();
+            DeliveryMethod deliveryMethod = deliveryMethodMapper.deliveryMethodDtoToDeliveryMethod(deliveryMethodDto);
+            Delivery delivery = new Delivery();
+            delivery.setDeliveryMethod(deliveryMethod);
+            delivery.setOrder(order);
+
+            orderRepository.save(order);
+            deliveryRepository.save(delivery);
+            orderItemRepository.saveAll(orderItems);
+            requestResponse.setMessage("ORDER IN PROGRESS.");
+        } else {
+            requestResponse.setMessage("UPS!SOMETHING IS WRONG");
+        }
+        return requestResponse;
+    }
+
 
 }
 

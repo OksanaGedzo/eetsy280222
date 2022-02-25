@@ -60,11 +60,15 @@ public class OrderController {
         return response;
     }
 
+    @PostMapping("/post/order/to/orders/in/progress")
+    @Operation(summary = "Post order confirmation in orders statusega inProgress")
+    public RequestResponse confirmOrderRequestDto(@RequestBody OrderConfirmationRequestDto orderConfirmationRequestDto) {
+        RequestResponse response = orderService.confirmOrder(orderConfirmationRequestDto);
+        return response;
+    }
+
 
 }
 
 
-//    public List<SubGroupResponse> getSubGroupsByPrimaryGroupId(@RequestParam Integer id) {
-//        List<SubGroupResponse> response = subGroupService.findSubGroupsNameAndPicture(id);
-//        return response;
-//}
+
