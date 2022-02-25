@@ -18,7 +18,7 @@ public class OrderConfirmationRequestDto implements Serializable {
     private final Instant orderDate;
     private final String orderStatus;
     private final BigDecimal totalPrice;
-    private final List<OrderItemDto> orderItemsDto;
+    private final List<OrderItemDto> orderItemDto;
     private final DeliveryMethodDto deliveryMethodDto;
 }
 
