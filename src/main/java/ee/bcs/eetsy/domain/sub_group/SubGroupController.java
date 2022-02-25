@@ -34,7 +34,7 @@ public class SubGroupController {
         List<SubGroupResponse> response = subGroupService.findSubGroupsNameAndPicture(id);
         return response;
     }
-    @GetMapping("get/subgroup/item/response")
+    @GetMapping("get/items/by/subgroup/name")
     @Operation(summary = "Get toodete gruppi, mis kuulub sub_groupisse")
     public List<SubGroupItemResponse> getSubGroupItemResponse (@RequestParam String name) {
         List<SubGroupItemResponse> responses = subGroupService.findItemsBySubGroupName(name);
