@@ -60,6 +60,10 @@ INSERT INTO public.primary_group (id, picture_id, name) VALUES (DEFAULT, 1, 'Han
 INSERT INTO public.primary_group (id, picture_id, name) VALUES (DEFAULT, 2, 'From forest');
 INSERT INTO public.primary_group (id, picture_id, name) VALUES (DEFAULT, 3, 'From garden');
 INSERT INTO public.primary_group (id, picture_id, name) VALUES (DEFAULT, 4, 'From kitchen');
+INSERT INTO public.primary_group (id, picture_id, name) VALUES (DEFAULT, 5, 'Handcraft');
+INSERT INTO public.primary_group (id, picture_id, name) VALUES (DEFAULT, 6, 'From forest');
+INSERT INTO public.primary_group (id, picture_id, name) VALUES (DEFAULT, 7, 'From garden');
+INSERT INTO public.primary_group (id, picture_id, name) VALUES (DEFAULT, 8, 'From kitchen');
 
 
 
@@ -67,9 +71,12 @@ INSERT INTO public.item (id, seller_id, name, price, description) VALUES (DEFAUL
 INSERT INTO public.item (id, seller_id, name, price, description) VALUES (DEFAULT, 2, 'Müts 1', 100.00, 'tribuline müts');
 INSERT INTO public.item (id, seller_id, name, price, description) VALUES (DEFAULT, 3, 'Müts 2', 20.00, 'punane müts');
 INSERT INTO public.item (id, seller_id, name, price, description) VALUES (DEFAULT, 4, 'Müts 3', 10.00, 'sinine müts');
+INSERT INTO public.item (id, seller_id, name, price, description) VALUES (DEFAULT, 5, 'Müts', 10.00, 'villane müts');
+INSERT INTO public.item (id, seller_id, name, price, description) VALUES (DEFAULT, 6, 'Müts 1', 100.00, 'tribuline müts');
+INSERT INTO public.item (id, seller_id, name, price, description) VALUES (DEFAULT, 7, 'Müts 2', 20.00, 'punane müts');
+INSERT INTO public.item (id, seller_id, name, price, description) VALUES (DEFAULT, 8, 'Müts 3', 10.00, 'sinine müts');
 
-
-
+//TODO BANNER PILT!!!
 
 INSERT INTO public.item_picture (id, item_id, picture_id) VALUES (DEFAULT, 1, 1);
 INSERT INTO public.item_picture (id, item_id, picture_id) VALUES (DEFAULT, 1, 1);
@@ -83,9 +90,6 @@ INSERT INTO public.sub_group (id, primary_group_id, item_id, picture_id, name) V
 INSERT INTO public.sub_group (id, primary_group_id, item_id, picture_id, name) VALUES (DEFAULT, 1, 1, 1, 'For your food');
 INSERT INTO public.sub_group (id, primary_group_id, item_id, picture_id, name) VALUES (DEFAULT, 1, 1, 1, 'For your hands');
 INSERT INTO public.sub_group (id, primary_group_id, item_id, picture_id, name) VALUES (DEFAULT, 1, 1, 1, 'For your home');
-
-
-
 
 
 INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (DEFAULT, 1, 1, '1', '2022-02-14 16:07:36.000000', 'R', 10.00);
