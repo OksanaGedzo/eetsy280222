@@ -2,6 +2,7 @@ package ee.bcs.eetsy.domain.user;
 
 
 import ee.bcs.eetsy.domain.RequestResponse;
+import ee.bcs.eetsy.domain.contact.ContactService;
 import ee.bcs.eetsy.domain.shoppingcart.OrderItem;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class UserController {
 
     @Resource
     UserService userService;
+
+    @Resource
+    ContactService contactService;
 
     @GetMapping("/login")
     @Operation(summary = " this is login info")
@@ -45,6 +49,8 @@ public class UserController {
         UserDto userDto = userService.findUserInfoById(id);
         return userDto;
     }
+
+
 
 
 }
