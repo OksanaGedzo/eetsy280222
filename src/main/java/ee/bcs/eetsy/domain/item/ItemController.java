@@ -47,8 +47,8 @@ public class ItemController {
 
     @PutMapping("/update/item")
     @Operation(summary = "Update an item")
-    public RequestResponse updateItem (@RequestBody ItemDto itemDto) {
-        RequestResponse response = itemService.updateItem(itemDto);
+    public RequestResponse updateItem (@RequestBody ItemRequest itemRequest) {
+        RequestResponse response = itemService.updateItem(itemRequest);
         return response;
     }
 

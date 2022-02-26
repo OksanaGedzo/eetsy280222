@@ -32,5 +32,10 @@ public class PictureController {
         return pictures;
     }
 
+    @DeleteMapping("/delete/item/picture")
+    public RequestResponse deleteImageByImageId (@RequestParam Integer id) {
+        RequestResponse requestResponse = pictureService.deleteImageByImageId(id);
+        return requestResponse;
+    }
 
 }

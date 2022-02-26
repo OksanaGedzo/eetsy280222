@@ -33,7 +33,6 @@ public class PictureService {
 
     public List<PictureResponse> getImagesByItemId(Integer id) {
         List<ItemPicture> itemPictures = itemPictureRepository.findByItemId(id);
-        //mapping itempicture to picture
         List<PictureResponse> pictures = pictureResponseMapper.itemPicturesToPicturesResponse(itemPictures);
         return pictures;
     }
@@ -59,4 +58,17 @@ public class PictureService {
         PictureResponse pictureResponse = pictureResponseMapper.pictureToPictureResponse(picture);
         return pictureResponse;
     }
+
+    public RequestResponse deleteImageByImageId(Integer id) {
+        RequestResponse requestResponse = new RequestResponse();
+
+        if (pictureRepository.existsById(id)) {
+            pictureRepository.deleteById(id);
+            requestResponse.setMessage("Image deleted");
+        } else {
+            requestResponse.setError("No image found");
+        }
+        return requestResponse;
+    }
 }
+
