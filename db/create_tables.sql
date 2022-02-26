@@ -176,6 +176,7 @@ ALTER TABLE item_picture ADD CONSTRAINT item_picture_item
 ALTER TABLE item_picture ADD CONSTRAINT item_picture_picture
     FOREIGN KEY (picture_id)
         REFERENCES picture (id)
+        ON DELETE  CASCADE
         NOT DEFERRABLE
             INITIALLY IMMEDIATE
 ;
