@@ -9,6 +9,7 @@ public class SubGroupItemResponse {
     private final Integer itemId;
     private final String subGroupName;
     private final String itemName;
+    private final String itemPictureData;
     private final BigDecimal itemPrice;
     private final String itemDescription;
 }

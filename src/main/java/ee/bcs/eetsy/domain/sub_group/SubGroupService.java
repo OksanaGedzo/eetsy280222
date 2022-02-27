@@ -1,6 +1,7 @@
 package ee.bcs.eetsy.domain.sub_group;
 
 import ee.bcs.eetsy.domain.RequestResponse;
+import ee.bcs.eetsy.domain.picture.item_picture.ItemPictureRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,10 +19,10 @@ public class SubGroupService {
 
     @Resource
     private SubGroupRepository subGroupRepository;
-
     @Resource
     private SubGroupMapper subGroupMapper;
-
+    @Resource
+    private ItemPictureRepository itemPictureRepository;
 
     private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
@@ -36,18 +37,17 @@ public class SubGroupService {
                 .stream()
                 .filter(distinctByKey(SubGroup::getName))
                 .collect(Collectors.toList());
-
-        List<SubGroupResponse> subGroupsResponse = subGroupMapper.subGroupToSubGroupResponses(subGroups);
-        return subGroupsResponse;
+        return subGroupMapper.subGroupToSubGroupResponses(subGroups);
     }
-
 
     public List<SubGroupItemResponse> findItemsBySubGroupName(String name) {
-        List<SubGroup> subGroup = subGroupRepository.findListByNameIgnoreCase(name);
-        List<SubGroupItemResponse> subGroupItemResponses = subGroupMapper.toSubGroupItemResponses(subGroup);
-        return subGroupItemResponses;
+        List<SubGroup> subGroups = subGroupRepository.findListByNameIgnoreCase(name);
+        for (SubGroup sub : subGroups) {
+            Integer itemId = sub.getItem().getId();
+            sub.setPicture(itemPictureRepository.findByItemId(itemId).get(0).getPicture());
+        }
+        return subGroupMapper.toSubGroupItemResponses(subGroups);
     }
-
 
     public RequestResponse addNewSubGroup(SubGroupRequest subGroupRequest) {
         RequestResponse response = new RequestResponse();

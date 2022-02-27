@@ -2,16 +2,16 @@ package ee.bcs.eetsy.domain.item;
 
 import ee.bcs.eetsy.domain.RequestResponse;
 import ee.bcs.eetsy.domain.picture.Picture;
-import ee.bcs.eetsy.domain.picture.PictureDto;
 import ee.bcs.eetsy.domain.picture.PictureRepository;
 import ee.bcs.eetsy.domain.picture.PictureResponse;
+import ee.bcs.eetsy.domain.picture.PictureResponseMapper;
 import ee.bcs.eetsy.domain.picture.item_picture.ItemPicture;
+import ee.bcs.eetsy.domain.picture.item_picture.ItemPictureMapper;
 import ee.bcs.eetsy.domain.picture.item_picture.ItemPictureRepository;
 import ee.bcs.eetsy.domain.primary_group.PrimaryGroupRepository;
 import ee.bcs.eetsy.domain.seller.Seller;
 import ee.bcs.eetsy.domain.seller.SellerRepository;
 import ee.bcs.eetsy.domain.sub_group.SubGroup;
-import ee.bcs.eetsy.domain.sub_group.SubGroupDto;
 import ee.bcs.eetsy.domain.sub_group.SubGroupRepository;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +38,8 @@ public class ItemService {
     private ItemPictureRepository itemPictureRepository;
     @Resource
     private PrimaryGroupRepository primaryGroupRepository;
+    @Resource
+    private PictureResponseMapper pictureResponseMapper;
 
     public List<ItemDto> findAllItems() {
         List<Item> allItems = itemRepository.findAll();
@@ -45,19 +47,14 @@ public class ItemService {
         return allItemsDtos;
     }
 
-//    public ItemDto findItemByName(String name) {
-//        Item itemByName = itemRepository.findByName(name);
-//        ItemDto itemByNameDto  = itemMapper.itemToItemDto(itemByName);
-//        return itemByNameDto;
-//    }
-
-    public ItemPagetDto findItemdById(Integer id) {
+    public ItemRequest findItemdById(Integer id) {
         Optional<Item> itemById = itemRepository.findById(id);
-        ItemPagetDto itemPagetDto = itemMapper.itemToItemPagetDto(itemById.get());
-        return itemPagetDto;
+        ItemRequest itemRequest = itemMapper.itemToItemRequest(itemById.get());
+        List<ItemPicture> itemPictures = itemPictureRepository.findByItemId(id);
+        List<PictureResponse> pictureResponses = pictureResponseMapper.itemPicturesToPicturesResponse(itemPictures);
+        itemRequest.setPictures(pictureResponses);
+        return itemRequest;
     }
-
-
     public RequestResponse updateItem(ItemNewSubGroupRequest itemRequest) {
         RequestResponse response = new RequestResponse();
         Optional<Item> oldItem = itemRepository.findById(itemRequest.getItemId());
@@ -65,12 +62,6 @@ public class ItemService {
             response.setError("Item with the Id " + itemRequest.getItemId() + " not found");
             return response;
         }
-        //this is wrong, we are mapping a NEW item from the request instead of finding
-        //the old one and updating it
-        //Item item = itemMapper.itemRequestToItem(itemRequest);
-        //this should have been a hint since why would i need to set the seller again
-        // if im just changing a few parameters on the item
-        //item.setSeller(oldItem.get().getSeller());
         Item item = itemRepository.findById(itemRequest.getItemId()).get();
         item.setDescription(itemRequest.getDescription());
         item.setName(itemRequest.getName());
@@ -128,7 +119,6 @@ public class ItemService {
     }
 
     private void addItemRequestPicturesToDatabase(ItemNewSubGroupRequest itemNewSubGroupRequest, Item item) {
-        //We need an already existing item from the database to set picture relationships
         List<PictureResponse> pictureDtoList = itemNewSubGroupRequest.getPictures();
         for (PictureResponse pictureResponse : pictureDtoList) {
             Picture picture = new Picture();

@@ -10,11 +10,12 @@ import java.util.List;
 
 @Data
 public class ItemRequest implements Serializable {
-    private final Integer itemId;
-    private final String name;
-    private final String subGroupName;
-    private final Integer sellerId;
-    private final BigDecimal price;
-    private final String description;
-    private final List<PictureResponse> pictures;
+    private Integer itemId;
+    private String name;
+    private String subGroupName;
+    private Integer sellerId;
+    private String sellerName;
+    private BigDecimal price;
+    private String description;
+    private List<PictureResponse> pictures;
 }

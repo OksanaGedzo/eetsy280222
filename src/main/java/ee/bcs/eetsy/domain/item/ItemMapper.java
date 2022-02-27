@@ -18,9 +18,7 @@ public interface ItemMapper {
     ItemDto itemToItemDto(Item item);
     List<ItemDto> itemsToItemsDto(List<Item> items);
 
-
-
-
+    ItemResponse itemToItemResponse(Item item);
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "price", target = "price")
@@ -40,6 +38,11 @@ public interface ItemMapper {
 
     @Mapping(source = "seller.name", target = "sellerName")
     ItemPagetDto itemToItemPagetDto(Item item);
+
+    @Mapping(source = "seller.name", target = "sellerName")
+    @Mapping(source = "seller.id", target = "sellerId")
+    @Mapping(source = "id", target = "itemId")
+    ItemRequest itemToItemRequest(Item item);
 
     @Mapping(source = "sellerName", target = "seller.name")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

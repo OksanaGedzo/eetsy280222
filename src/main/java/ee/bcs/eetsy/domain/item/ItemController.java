@@ -12,10 +12,8 @@ import java.util.List;
 
 public class ItemController {
 
-
     @Resource
     private ItemService itemService;
-
 
     @GetMapping("/items/")
     @Operation(summary = "Get'i kõik sub_groupi itemide andmed")
@@ -24,18 +22,11 @@ public class ItemController {
         return items;
     }
 
-//    @GetMapping("/item/by/name")
-//    @Operation(summary = "Get'i itemi andmed by name")
-//    public ItemDto ItemByName(String name) {
-//        ItemDto itemByNameDto = itemService.findItemByName(name);
-//        return itemByNameDto;
-//    }
-
     @GetMapping("/get/product/by/id")
     @Operation(summary = "Get'i ühe itemi andmed by id")
-    public ItemPagetDto getProduct (@RequestParam Integer id) {
-        ItemPagetDto itemDto = itemService.findItemdById(id);
-        return itemDto;
+    public ItemRequest getProduct (@RequestParam Integer id) {
+        ItemRequest itemRequest = itemService.findItemdById(id);
+        return itemRequest;
     }
 
     @PostMapping("/add/item")
