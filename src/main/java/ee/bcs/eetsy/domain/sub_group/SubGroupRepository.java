@@ -10,7 +10,6 @@ public interface SubGroupRepository extends JpaRepository<SubGroup, Integer> {
     @Query("select s from SubGroup s where s.primaryGroup.id = ?1")
     List<SubGroup> findSubGroupsByPrimaryGroupId(Integer id);
 
-
     @Query("select distinct s from SubGroup s where s.primaryGroup.id = :id")
     List<SubGroup> findDistinctByPrimaryGroup_Id(@Param("id") Integer id);
 
@@ -24,28 +23,9 @@ public interface SubGroupRepository extends JpaRepository<SubGroup, Integer> {
     long countSubGroupsByPrimaryGroupId(Integer id);
 
 
-
-
-
-
-
-
-
-
-
-
 //
 //    @Query("select s from SubGroup s where s.primaryGroup.id = :id")
 //    SubGroup findByPrimaryGroupId(@Param("id") Integer id);
-
-
-
-
-
-
-
-
-
 
 
 }
