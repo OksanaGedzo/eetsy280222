@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SubGroupRepository extends JpaRepository<SubGroup, Integer> {
     @Query("select s from SubGroup s where s.primaryGroup.id = ?1")
@@ -20,6 +19,9 @@ public interface SubGroupRepository extends JpaRepository<SubGroup, Integer> {
 
     @Query("select s from SubGroup s where upper(s.name) = upper(:name) order by s.id DESC")
     List<SubGroup> findFirstByName(@Param("name") String name);
+
+    @Query("select count(distinct s) from SubGroup s where s.primaryGroup.id = ?1")
+    long countSubGroupsByPrimaryGroupId(Integer id);
 
 
 
