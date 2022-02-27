@@ -1,13 +1,12 @@
 package ee.bcs.eetsy.domain.sub_group;
 
+import ee.bcs.eetsy.domain.RequestResponse;
 import ee.bcs.eetsy.domain.item.ItemRepository;
 import ee.bcs.eetsy.domain.picture.Picture;
 import ee.bcs.eetsy.domain.picture.PictureDto;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -40,6 +39,15 @@ public class SubGroupController {
         List<SubGroupItemResponse> responses = subGroupService.findItemsBySubGroupName(name);
         return responses;
     }
+
+    @PostMapping("add/subgroup")
+    @Operation(summary = "Add new subgroup")
+    public RequestResponse getSubGroupItemResponse (@RequestBody SubGroupRequest subGroupRequest) {
+        RequestResponse response = subGroupService.addNewSubGroup(subGroupRequest);
+        return response;
+    }
+
+
 //
 //    @GetMapping("/get/group")
 //    @Operation(summary = "Get toodete gruppi, mis kuulub sub_groupisse")

@@ -7,6 +7,7 @@ import ee.bcs.eetsy.domain.picture.PictureRepository;
 import ee.bcs.eetsy.domain.picture.PictureResponse;
 import ee.bcs.eetsy.domain.picture.item_picture.ItemPicture;
 import ee.bcs.eetsy.domain.picture.item_picture.ItemPictureRepository;
+import ee.bcs.eetsy.domain.primary_group.PrimaryGroupRepository;
 import ee.bcs.eetsy.domain.seller.Seller;
 import ee.bcs.eetsy.domain.seller.SellerRepository;
 import ee.bcs.eetsy.domain.sub_group.SubGroup;
@@ -35,6 +36,8 @@ public class ItemService {
     private PictureRepository pictureRepository;
     @Resource
     private ItemPictureRepository itemPictureRepository;
+    @Resource
+    private PrimaryGroupRepository primaryGroupRepository;
 
     public List<ItemDto> findAllItems() {
         List<Item> allItems = itemRepository.findAll();
@@ -55,7 +58,7 @@ public class ItemService {
     }
 
 
-    public RequestResponse updateItem(ItemRequest itemRequest) {
+    public RequestResponse updateItem(ItemNewSubGroupRequest itemRequest) {
         RequestResponse response = new RequestResponse();
         Optional<Item> oldItem = itemRepository.findById(itemRequest.getItemId());
         if (oldItem.isEmpty()) {
@@ -89,7 +92,7 @@ public class ItemService {
         return response;
     }
 
-    public RequestResponse addItem(ItemRequest itemRequest) {
+    public RequestResponse addItem(ItemNewSubGroupRequest itemRequest) {
         RequestResponse response = new RequestResponse();
         Optional<Seller> seller = sellerRepository.findById(itemRequest.getSellerId());
 
@@ -97,7 +100,7 @@ public class ItemService {
             response.setError("Seller with the Id " + itemRequest.getSellerId() + " not found");
             return response;
         }
-        Item item = itemMapper.itemRequestToItem(itemRequest);
+        Item item = itemMapper.ItemNewSubGroupRequestToItem(itemRequest);
         item.setSeller(seller.get());
         item = itemRepository.save(item);
         Integer itemId = item.getId();
@@ -106,19 +109,27 @@ public class ItemService {
         SubGroup subGroup = new SubGroup();
         subGroup.setName(subGroupName);
         subGroup.setItem(item);
-        SubGroup templateSubGroup = subGroupRepository.findFirstByName(subGroupName).get(0);
-        subGroup.setPicture(templateSubGroup.getPicture());
-        subGroup.setPrimaryGroup(templateSubGroup.getPrimaryGroup());
+        if (itemRequest.getSubGroupPictureData()==null)
+        {
+            SubGroup templateSubGroup = subGroupRepository.findFirstByName(subGroupName).get(0);
+            subGroup.setPicture(templateSubGroup.getPicture());
+        } else {
+            Picture picture = new Picture();
+            picture.setData(itemRequest.getSubGroupPictureData().getBytes(StandardCharsets.UTF_8));
+            picture = pictureRepository.save(picture);
+            subGroup.setPicture(picture);
+        }
+        subGroup.setPrimaryGroup(primaryGroupRepository.findById(itemRequest.getPrimaryGroupId()).get());
         subGroupRepository.save(subGroup);
 
         addItemRequestPicturesToDatabase(itemRequest, item);
-        response.setMessage("Item Added");
+        response.setMessage(item.getName() + " saved to sub group "+ subGroup.getName());
         return response;
     }
 
-    private void addItemRequestPicturesToDatabase(ItemRequest itemRequest, Item item) {
+    private void addItemRequestPicturesToDatabase(ItemNewSubGroupRequest itemNewSubGroupRequest, Item item) {
         //We need an already existing item from the database to set picture relationships
-        List<PictureResponse> pictureDtoList = itemRequest.getPictures();
+        List<PictureResponse> pictureDtoList = itemNewSubGroupRequest.getPictures();
         for (PictureResponse pictureResponse : pictureDtoList) {
             Picture picture = new Picture();
             picture.setData(pictureResponse.getData().getBytes(StandardCharsets.UTF_8));
@@ -130,4 +141,5 @@ public class ItemService {
         }
         System.out.println(pictureDtoList.size() + " images added into relation with item id " + item.getId());
     }
+
 }

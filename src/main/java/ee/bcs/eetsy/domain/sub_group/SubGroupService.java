@@ -1,5 +1,6 @@
 package ee.bcs.eetsy.domain.sub_group;
 
+import ee.bcs.eetsy.domain.RequestResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,4 +49,8 @@ public class SubGroupService {
     }
 
 
+    public RequestResponse addNewSubGroup(SubGroupRequest subGroupRequest) {
+        RequestResponse response = new RequestResponse();
+        return null;
+    }
 }

@@ -25,6 +25,11 @@ public interface ItemMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "price", target = "price")
     @Mapping(source = "description", target = "description")
+    Item ItemNewSubGroupRequestToItem(ItemNewSubGroupRequest ItemNewSubGroupRequest);
+
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "price", target = "price")
+    @Mapping(source = "description", target = "description")
     Item itemRequestToItem(ItemRequest itemRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

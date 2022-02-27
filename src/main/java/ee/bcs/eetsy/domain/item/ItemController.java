@@ -40,14 +40,14 @@ public class ItemController {
 
     @PostMapping("/add/item")
     @Operation(summary = "Add an item")
-    public RequestResponse addItem (@RequestBody ItemRequest itemRequest) {
+    public RequestResponse addItem (@RequestBody ItemNewSubGroupRequest itemRequest) {
         RequestResponse response = itemService.addItem(itemRequest);
         return response;
     }
 
     @PutMapping("/update/item")
     @Operation(summary = "Update an item")
-    public RequestResponse updateItem (@RequestBody ItemRequest itemRequest) {
+    public RequestResponse updateItem (@RequestBody ItemNewSubGroupRequest itemRequest) {
         RequestResponse response = itemService.updateItem(itemRequest);
         return response;
     }
