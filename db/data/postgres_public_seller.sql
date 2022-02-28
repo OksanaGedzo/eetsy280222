@@ -1,0 +1,1 @@
+INSERT INTO public.seller (id, logo_picture_id, name, email, telephone, index, aadress, website, validated) VALUES (1, 3, 'Ilus Talu Pere OÜ', 'apple@gmail.com', '1111111', '54321', 'Tallinn', null, true);

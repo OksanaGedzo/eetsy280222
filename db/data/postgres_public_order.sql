@@ -1,0 +1,9 @@
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (1, 1, 1, '1', '2022-02-14 16:07:36.000000', 'W', 10.00);
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (4, 1, 1, '1802227915', '2022-02-18 11:43:37.000000', 'X', 5.00);
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (7, 3, 1, '250222806', '2022-02-25 15:19:12.837358', 'P', 133.00);
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (8, 3, 1, '2502221416', '2022-02-25 15:27:59.227313', 'O', 0.00);
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (6, 1, 1, '2102228605', '2022-02-28 11:13:28.665230', 'P', 818.00);
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (9, 1, 1, '2802224574', '2022-02-28 11:14:23.778207', 'P', 113.00);
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (10, 1, 1, '2802222851', '2022-02-28 11:14:36.024378', 'O', 0.00);
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (11, 4, 1, '2802222000', '2022-02-28 11:18:19.023547', 'O', 0.00);
+INSERT INTO public."order" (id, user_id, payment_method_id, order_number, order_date, order_status, total_price) VALUES (12, 5, 1, '2802221403', '2022-02-28 13:47:45.599501', 'P', 38.00);

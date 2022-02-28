@@ -1,0 +1,4 @@
+INSERT INTO public.contact (id, first_name, last_name, address, post_index, country, phone_number, email) VALUES (1, 'Mart', 'tamm', 'Tallinn', '12345', 'Estonia', '1234567', 'tallinn@gmail.com');
+INSERT INTO public.contact (id, first_name, last_name, address, post_index, country, phone_number, email) VALUES (2, 'uusesinimi', 'uuspärinimi', 'uusaadress', 'uusindeks', 'väga uus country', 'uuuu', 'aaaa');
+INSERT INTO public.contact (id, first_name, last_name, address, post_index, country, phone_number, email) VALUES (3, 'firstname', 'lastname', 'aadress', '214345', 'eesssti', '12345678', 'midagi@mail.ee');
+INSERT INTO public.contact (id, first_name, last_name, address, post_index, country, phone_number, email) VALUES (4, 'Rain2', 'RainRain', 'RainRain', '12345', 'RainRainLand', '123456789', 'RainRain@Rain.ee');
